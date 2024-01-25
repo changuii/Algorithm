@@ -1,13 +1,12 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
 
-public class Main {
+
+class Main {
     static ArrayList<Integer>[] A;
     static boolean[] V;
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
@@ -16,11 +15,11 @@ public class Main {
 
         A = new ArrayList[N];
         V = new boolean[N];
-        for(int i=1; i<N; i++){
+        for(int i=0; i<N; i++){
             A[i] = new ArrayList<>();
         }
 
-        for(int i=0; i<M; i++){
+        for(int i=1; i<M+1; i++){
             st = new StringTokenizer(br.readLine(), " ");
             int s = Integer.parseInt(st.nextToken());
             int e = Integer.parseInt(st.nextToken());
@@ -28,8 +27,8 @@ public class Main {
             A[e].add(s);
         }
 
-        int answer = 0;
-        for(int i=1; i<N; i++){
+        int answer= 0;
+        for(int i = 1; i<N; i++){
             if(!V[i]){
                 answer++;
                 DFS(i);
@@ -37,14 +36,13 @@ public class Main {
         }
         System.out.println(answer);
     }
-    public static void DFS(int v){
-        if(V[v]){
-            return;
-        }
-        V[v] = true;
-        for(int x : A[v]){
-            if(!V[x])
-                DFS(x);
+    public static void DFS(int x){
+        if(V[x]) return;
+
+        V[x] = true;
+        for(int z : A[x]){
+            if(!V[z])
+                DFS(z);
         }
     }
 }
