@@ -8,7 +8,7 @@ class Main {
         int N = new Scanner(System.in).nextInt();
 
 
-        boolean[] A = new boolean[100000001];
+        boolean[] A = new boolean[1003002];
         for(int i=2; i<Math.sqrt(A.length); i++){
             if(A[i]) continue;
             for(int j = i+i; j<A.length; j += i){
