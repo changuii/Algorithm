@@ -15,7 +15,7 @@ class Main {
         for(int i= 2; i< A.length; i++){
             A[i] = i;
         }
-        
+
         for(int i=2; i<Math.sqrt(A.length); i++){
             if(A[i] == 0) continue;
             for(int j = i + i; j < A.length ; j += i){
@@ -23,14 +23,19 @@ class Main {
             }
         }
 
+
         int answer = 0;
+
         for(int i= 2; i< A.length; i++){
             if(A[i] != 0){
                 long temp = A[i];
+                // N^k <= B --> N <= B / N^k-1
                 while ((double)A[i] <= (double) M / (double) temp){
+                    // N^k >= A --> N >= A / N^k-1
                     if((double)A[i] >= (double) N/ (double) temp){
                         answer++;
                     }
+                    // 제곱
                     temp *= A[i];
                 }
             }
