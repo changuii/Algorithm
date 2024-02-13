@@ -1,89 +1,82 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
-class Main {
-    static List<Node>[] A;
-    static boolean[] V;
-    static long[] data;
-    static long lcm;
-    public static void main(String[] args) throws IOException {
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-       int N = Integer.parseInt(br.readLine());
-       A = new ArrayList[N];
-       data = new long[N];
-       V = new boolean[N];
-       lcm = 1;
-       for(int i=0; i<A.length; i++){
-           A[i] = new ArrayList<>();
-       }
-
-       StringTokenizer st;
-       for(int i=0; i<N-1; i++){
-           st = new StringTokenizer(br.readLine(), " ");
-           int a = Integer.parseInt(st.nextToken());
-           int b = Integer.parseInt(st.nextToken());
-           int p = Integer.parseInt(st.nextToken());
-           int q = Integer.parseInt(st.nextToken());
-
-           A[a].add(new Node(b, p, q));
-           A[b].add(new Node(a, q, p));
-           lcm *= (p*q / gcd(p, q));
-       }
-       data[0] = lcm;
-       DFS(0);
-       long mgcd = data[0];
-
-       for(int i=1; i<N; i++){
-           mgcd = gcd(mgcd, data[i]);
-       }
-
-
-       StringBuilder sb = new StringBuilder();
-       for(long x : data){
-           sb.append(x / mgcd).append(" ");
-       }
-
-        System.out.println(sb);
-
-
-
+public class Main{
+    
+    public static void main(String[] args) throws Exception{
+        Solve solve = new Solve();
+        solve.run();
     }
+    
+}
 
-    private static void DFS(int now){
-        V[now] = true;
-
-        for(Node x : A[now]){
-            if(!V[x.b]){
-                data[x.b] = data[now] * x.q / x.p;
-                DFS(x.b);
-            }
-        }
-
-
+class Solve{
+    
+    private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private int N;
+    private long[] nums;
+    private ArrayList<ArrayList<Integer>> edge = new ArrayList<ArrayList<Integer>>();
+    
+    public void run() throws Exception{
+        input();
+        setNums();
+        for(int i = 0; i < N; i++) System.out.print(nums[i] + " ");
     }
-
-    private static long gcd(long a, long b){
-        if(a % b == 0) return b;
-        else return gcd(b, a%b);
-    }
-
-    static class Node{
-        int b;
-        int p;
-        int q;
-
-        Node(int b, int p, int q){
-            this.b=b;
-            this.p=p;
-            this.q=q;
+    
+    private void setNums(){
+        long gcd = getGCD(nums[0], nums[1]);
+        while(gcd > 1){
+            for(int i = 0; i < N; i++) gcd = getGCD(gcd, nums[i]);
+            for(int i = 0; i < N; i++) nums[i] /= gcd;
         }
     }
-
-
-
+    
+    private void input() throws Exception{
+        N = Integer.parseInt(br.readLine());
+        nums = new long[N+5];
+        for(int i = 0; i < N; i++) {
+            edge.add(new ArrayList<Integer>());
+            nums[i] = 1;
+        }
+        for(int i = 0; i < N-1; i++){
+            int a, b;
+            long p, q;
+            String[] read = br.readLine().split(" ");
+            a = Integer.parseInt(read[0]);
+            b = Integer.parseInt(read[1]);
+            p = Long.parseLong(read[2]);
+            q = Long.parseLong(read[3]);
+            long gcd = getGCD(p, q);
+            calc(a, b, p / gcd, q / gcd);
+        }
+    }
+    
+    private long getGCD(long a, long b){
+        while(b > 0){
+            long temp = a;
+            a = b;
+            b = temp % b;
+        }
+        return a;
+    }
+    
+    private void calc(int a, int b, long p, long q){
+        Boolean[] check = new Boolean[N+5];
+        long tempA = nums[a];
+        long tempB = nums[b];
+        update(a, tempB*p, check);
+        update(b, tempA*q, check);
+        edge.get(a).add(b);
+        edge.get(b).add(a);
+    }
+    
+    private void update(int target, long num, Boolean[] check){
+        nums[target] *= num;
+        check[target] = true;
+        for(int i = 0; i < edge.get(target).size(); i++){
+            if(check[edge.get(target).get(i)] != null) continue;
+            update(edge.get(target).get(i), num, check);
+        }
+    }
+    
 }
