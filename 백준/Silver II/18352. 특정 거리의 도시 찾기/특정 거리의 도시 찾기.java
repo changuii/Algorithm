@@ -40,7 +40,7 @@ class Main {
           if(depth[i] == K) sb.append(i).append("\n");
       }
 
-        System.out.println(sb.length() == 0 ? -1 : sb);
+      System.out.println(sb.length() == 0 ? -1 : sb);
 
 
 
@@ -55,6 +55,7 @@ class Main {
         depth[e] = 0;
         while (!q.isEmpty()){
             int now = q.poll();
+            if(depth[now] > K) break;
             for(int x : A[now]){
                 if(!V[x]){
                     depth[x] = depth[now] + 1;
