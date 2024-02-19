@@ -35,9 +35,10 @@ class Main {
             for(int j=1; j<N; j++){
                 if(D[j] == 0){
                     now = j;
+                    D[now] = -1; 
+                    break;
                 }
             }
-            D[now] = -1;
             sb.append(now).append(" ");
             for(int x : A[now]){
                 D[x]--;
