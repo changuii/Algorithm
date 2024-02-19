@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 
@@ -11,9 +10,9 @@ class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine())+1;
-        int request = Integer.parseInt(br.readLine());
-
+        int M = Integer.parseInt(br.readLine());
         A = new int[N];
+
         for(int i=1; i<N; i++){
             A[i] = i;
         }
@@ -22,19 +21,17 @@ class Main {
         for(int i=1; i<N; i++){
             st = new StringTokenizer(br.readLine(), " ");
             for(int j=1; j<N; j++){
-                if(st.nextToken().equals("1"))
-                    union(i, j);
+                boolean c = st.nextToken().equals("1") ? true : false;
+                if(c) union(i, j);
             }
         }
 
-        st = new StringTokenizer(br.readLine(), " ");
-        int answer = find(Integer.parseInt(st.nextToken()));
+        st = new StringTokenizer(br.readLine());
+        int target = Integer.parseInt(st.nextToken());
         boolean flag = true;
-        for(int i=0; i<request-1; i++){
-            if(answer != find(Integer.parseInt(st.nextToken()))){
+        for(int i=1; i<M; i++){
+            if(find(target) != find(Integer.parseInt(st.nextToken())))
                 flag = false;
-                break;
-            }
         }
 
         System.out.println(flag ? "YES" : "NO");
@@ -46,8 +43,7 @@ class Main {
         int x = find(a);
         int y = find(b);
 
-        if(A[x] != A[y])
-            A[y] = x;
+        A[y] = x;
     }
     static int find(int a){
         if(A[a] == a){
@@ -57,4 +53,6 @@ class Main {
             return A[a];
         }
     }
+
+
 }
