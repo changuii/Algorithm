@@ -5,10 +5,9 @@ import java.util.StringTokenizer;
 
 
 class Main {
-
-    static int[] A ;
+    static int[] A;
     public static void main(String[] args) throws IOException {
-        BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         int N = Integer.parseInt(st.nextToken())+1;
@@ -23,18 +22,20 @@ class Main {
         for(int i=0; i<M; i++){
             st = new StringTokenizer(br.readLine(), " ");
 
-            boolean control = Integer.parseInt(st.nextToken())== 1 ? true : false;
+            boolean c = st.nextToken().equals("0") ? true : false;
             int a = Integer.parseInt(st.nextToken());
             int b = Integer.parseInt(st.nextToken());
 
-            if(control){
-                sb.append(find(a) == find(b) ? "YES" : "NO").append("\n");
-            }
-            else{
+            if(c){
                 union(a, b);
+            }else{
+                int x = find(a);
+                int y = find(b);
+                sb.append(x == y ? "YES" : "NO").append("\n");
             }
         }
         System.out.println(sb);
+
     }
 
     static void union(int a, int b){
@@ -51,5 +52,9 @@ class Main {
             A[a] = find(A[a]);
             return A[a];
         }
+
     }
+
+
+
 }
