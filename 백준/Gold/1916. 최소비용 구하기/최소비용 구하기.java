@@ -5,66 +5,62 @@ import java.util.*;
 
 
 class Main {
-    static int INF = Integer.MAX_VALUE;
+    static final int INF = Integer.MAX_VALUE;
     public static void main(String[] args) throws IOException {
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-       int N = Integer.parseInt(br.readLine())+1;
-       int M = Integer.parseInt(br.readLine());
+      int N = Integer.parseInt(br.readLine())+1;
+      int M = Integer.parseInt(br.readLine());
 
-       boolean[] V = new boolean[N];
-       int[] distance = new int[N];
-       ArrayList<Node>[] A = new ArrayList[N];
-       for(int i=1; i<N; i++){
-           A[i] = new ArrayList<>();
-           distance[i] = INF;
-       }
+      ArrayList<Bus>[] A = new ArrayList[N];
+      boolean[] V = new boolean[N];
+      int[] distance = new int[N];
+      for(int i=1; i<N; i++){
+          A[i] = new ArrayList<>();
+          distance[i] = INF;
+      }
 
-       StringTokenizer st;
-       for(int i=0; i<M; i++){
-           st = new StringTokenizer(br.readLine(), " ");
-           int a = Integer.parseInt(st.nextToken());
-           int b = Integer.parseInt(st.nextToken());
-           int w = Integer.parseInt(st.nextToken());
-           A[a].add(new Node(b, w));
-       }
-       st = new StringTokenizer(br.readLine(), " ");
-       int S = Integer.parseInt(st.nextToken());
-       int D = Integer.parseInt(st.nextToken());
+      StringTokenizer st;
+      for(int i=0; i<M; i++){
+          st = new StringTokenizer(br.readLine(), " ");
+          int a = Integer.parseInt(st.nextToken());
+          int b = Integer.parseInt(st.nextToken());
+          int w = Integer.parseInt(st.nextToken());
 
-       PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> {
-           return o1.W - o2.W;
-       });
-       distance[S] = 0;
-       q.add(new Node(S, 0));
-       while (!q.isEmpty()){
-           Node current = q.poll();
-           if(V[current.D]) continue;
-           V[current.D] = true;
-           for(Node x : A[current.D]){
-               if(!V[x.D]){
-                   if(distance[x.D] > distance[current.D] + x.W){
-                       distance[x.D] = distance[current.D] + x.W;
-                       q.add(new Node(x.D, distance[x.D]));
-                   }
-               }
-           }
-       }
-       System.out.println(distance[D]);
+          A[a].add(new Bus(b, w));
+      }
+      st = new StringTokenizer(br.readLine(), " ");
+      int S = Integer.parseInt(st.nextToken());
+      int D = Integer.parseInt(st.nextToken());
 
+      PriorityQueue<Bus> q = new PriorityQueue<>((o1, o2) -> {
+          return o1.weight - o2.weight;
+      });
+      q.add(new Bus(S, 0));
+      distance[S] = 0;
+      while (!q.isEmpty()){
+          Bus now = q.poll();
+          if(V[now.destination]) continue;
+          V[now.destination] = true;
+
+          for(Bus x : A[now.destination]){
+              if(distance[x.destination] > distance[now.destination] + x.weight){
+                  distance[x.destination] = distance[now.destination] + x.weight;
+                  q.add(new Bus(x.destination, distance[x.destination]));
+              }
+          }
+      }
+        System.out.println(distance[D]);
 
 
     }
 
-
-    static class Node{
-        int D;
-        int W;
-        Node(int D, int W){
-            this.D=D;
-            this.W=W;
+    static class Bus{
+        int destination;
+        int weight;
+        Bus(int destination, int weight){
+            this.destination = destination;
+            this.weight = weight;
         }
-
-
     }
 }
