@@ -1,3 +1,5 @@
 # Algorithm
 
-풀이는 블로그를 참고해주세요!.
+## 풀이
+
+[풀이 모음집](https://g-db.tistory.com/category/%EB%B0%B1%EC%A4%80)
