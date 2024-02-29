@@ -5,58 +5,56 @@ import java.util.*;
 
 
 class Main {
-    static ArrayList<Edge> edges;
     static int[] A;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        int V = Integer.parseInt(st.nextToken())+1;
-        int E = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken())+1;
+        int M = Integer.parseInt(st.nextToken());
 
-        edges = new ArrayList<>();
-        A = new int[V];
+        PriorityQueue<Edge> edges = new PriorityQueue<>((o1, o2) -> o1.weight- o2.weight);
+        A = new int[N];
 
-        for(int i=1; i<V; i++){
+        for(int i=1; i<N; i++){
             A[i] = i;
         }
 
-        for(int i=0; i<E; i++){
+        for(int i=0; i<M; i++){
             st = new StringTokenizer(br.readLine(), " ");
-            int start = Integer.parseInt(st.nextToken());
-            int destination = Integer.parseInt(st.nextToken());
-            int weight = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
 
-            edges.add(new Edge(start, destination, weight));
+            edges.offer(new Edge(a, b, w));
         }
-
-        edges.sort((o1, o2) -> o1.weight - o2.weight);
 
         int answer = 0;
-        for(Edge edge : edges){
-            if(find(edge.start) != find(edge.destination)){
-                union(edge.start, edge.destination);
-                answer += edge.weight;
+        while (!edges.isEmpty()){
+            Edge e = edges.poll();
+            if(find(e.start) != find(e.destination)){
+                union(e.start, e.destination);
+                answer += e.weight;
             }
         }
-
         System.out.println(answer);
     }
 
-    public static void union(int a, int b){
+
+    static void union(int a, int b){
         int x = find(a);
         int y = find(b);
 
         A[y] = x;
     }
-    public static int find(int a){
+
+    static int find(int a){
         if(A[a] == a) return a;
         else{
             A[a] = find(A[a]);
             return A[a];
         }
     }
-
 
     static class Edge{
         int start;
@@ -68,6 +66,7 @@ class Main {
             this.destination = destination;
             this.weight = weight;
         }
+
     }
 
 }
