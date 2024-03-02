@@ -5,26 +5,23 @@ import java.util.*;
 
 
 class Main {
-
     static int[] A;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine())+1;
+        PriorityQueue<Edge> q = new PriorityQueue<>((o1, o2) -> o1.weight-o2.weight);
+
 
         A = new int[N];
-        PriorityQueue<Edge> q = new PriorityQueue<>((o1, o2) -> o1.weight - o2.weight);
-
         for(int i=1; i<N; i++){
             A[i] = i;
         }
-
         for(int i=1; i<N; i++){
-            char[] data = br.readLine().toCharArray();
-            for(int j=0; j<N-1; j++){
-                if(data[j] != '0'){
-                    q.offer(
-                            new Edge(i, j+1, lanLength(data[j])));
+            char[] d = br.readLine().toCharArray();
+            for(int j=0;j<d.length; j++){
+                if(d[j] != '0') {
+                    q.offer(new Edge(i, j + 1, wireLength(d[j])));
                 }
             }
         }
@@ -52,32 +49,25 @@ class Main {
         public Edge(int start, int destination, int weight){
             this.start = start;
             this.destination = destination;
-            this.weight =weight;
+            this.weight = weight;
         }
     }
 
-
-
-    public static void union(int a, int b){
+    static void union(int a, int b){
         A[find(a)] = find(b);
     }
-    public static int find(int a){
+    static int find(int a){
         if(A[a] == a) return a;
         else return A[a] = find(A[a]);
     }
 
-    public static int lanLength(char x){
-        if(x == '0') return 0;
-        char[] data = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-
-        for(int i=1; i<53; i++){
-            if(i < 27 && x == data[i-1])
-                return i;
-            else if(i > 26 && x == Character.toUpperCase(data[i-27]))
-                return i;
+    static int wireLength(char a){
+        if(a >= 'a' && a <= 'z'){
+            return a - 'a' + 1;
+        }else if(a >= 'A' && a <= 'Z'){
+            return a - 'A' + 27;
         }
         return 0;
     }
-
 
 }
