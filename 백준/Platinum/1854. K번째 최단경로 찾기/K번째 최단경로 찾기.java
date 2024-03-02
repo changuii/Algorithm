@@ -13,11 +13,13 @@ class Main {
        int N = Integer.parseInt(st.nextToken())+1;
        int M = Integer.parseInt(st.nextToken());
        int K = Integer.parseInt(st.nextToken());
-       int[][] W = new int[1001][1001];
+       List<Edge>[] edges = new List[N];
 
        PriorityQueue<Integer>[] D = new PriorityQueue[N];
        for(int i=1; i<N; i++){
+           // 크기를 K만큼 초기화, 내림차순 정렬
            D[i] = new PriorityQueue<>(K, (o1, o2) -> o2 - o1);
+           edges[i] = new ArrayList<>();
        }
 
        for(int i=0; i<M; i++){
@@ -26,7 +28,7 @@ class Main {
            int b = Integer.parseInt(st.nextToken());
            int w = Integer.parseInt(st.nextToken());
 
-           W[a][b] = w;
+           edges[a].add(new Edge(b, w));
        }
 
        PriorityQueue<Edge> q = new PriorityQueue<>((o1, o2) -> o1.weight - o2.weight);
@@ -34,17 +36,22 @@ class Main {
        q.add(new Edge(1, 0));
        while (!q.isEmpty()){
            Edge now = q.poll();
-           for(int i =1; i<N; i++){
-               if(W[now.destination][i] != 0){
-                   if(D[i].size() < K){
-                       D[i].add(now.weight + W[now.destination][i]);
-                       q.add(new Edge(i, now.weight + W[now.destination][i]));
-                   }
-                   else if(D[i].peek() > now.weight + W[now.destination][i]){
-                       D[i].poll();
-                       D[i].add(now.weight + W[now.destination][i]);
-                       q.add(new Edge(i, now.weight + W[now.destination][i]));
-                   }
+           for(Edge x : edges[now.destination]){
+               int next = x.destination;
+               int distance = x.weight;
+               if(D[next].size() < K){
+                   // 현재 까지의 거리 + 다음 노드까지의 거리
+                   D[next].add(now.weight + distance);
+                   // q에 넣는다.
+                   q.add(new Edge(next, now.weight + distance));
+               }
+               // 거리 큐가 가득 찼다면 (K개만큼의 거리가 밝혀졌다면)
+               // 거리 큐의 상단 (내림차순)의 크기가 현재 까지의 거리 + 다음 노드까지의 거리보다 크다면, 갱신해준다.
+               else if(D[next].peek() > now.weight + distance){
+                   D[next].poll();
+                   // 갱신한다.
+                   D[next].add(now.weight + distance);
+                   q.add(new Edge(next, now.weight + distance));
                }
            }
        }
