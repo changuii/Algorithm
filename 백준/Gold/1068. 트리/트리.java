@@ -6,9 +6,9 @@ import java.util.*;
 
 class Main {
     static ArrayList<Integer>[] A;
-    static int[] M;
     static boolean[] V;
-    static int[] count;
+    static int answer =0;
+    static int D = 0;
     public static void main(String[] args) throws IOException {
       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -16,7 +16,6 @@ class Main {
 
       A = new ArrayList[N];
       V = new boolean[N];
-      M = new int[N];
       for(int i=0; i<N; i++){
           A[i] = new ArrayList<>();
       }
@@ -25,80 +24,55 @@ class Main {
       StringTokenizer st = new StringTokenizer(br.readLine(), " ");
       for(int i=0; i<N; i++){
           int a = Integer.parseInt(st.nextToken());
-
-          if(a == -1) {
-              root = i;
-          }else{
+          if(a != -1) {
               A[a].add(i);
               A[i].add(a);
+          }else{
+              root = i;
           }
       }
-      count = new int[N];
-      int D = Integer.parseInt(br.readLine());
-      M[root] = -1;
-      mBFS(root);
 
-      M[D] = -2;
-      V = new boolean[N];
-      dBFS(root);
-
-      int answer = 0;
-      for(int i=0; i<N; i++){
-          if(M[i] >= -1 && count[i] == 0)
-              answer++;
+      D = Integer.parseInt(br.readLine());
+      if(root == D){
+          System.out.println(0);
+      }else {
+          DFS(root);
+          System.out.println(answer);
       }
-      System.out.println(answer);
-
-
-
-
-
-
-
     }
-    static void mBFS(int num){
+    static void BFS(int num){
+        if(D == 0) return;
         Queue<Integer> q = new LinkedList<>();
 
         q.add(num);
         V[num] = true;
         while (!q.isEmpty()){
             int now = q.poll();
+            int count = 0;
             for(int x : A[now]){
-                if(!V[x]){
+                if(!V[x] && x != D){
                     V[x] = true;
-                    M[x] = now;
                     q.add(x);
+                    count++;
                 }
             }
+            if(count == 0) answer++;
         }
     }
 
-    static void dBFS(int num){
-        Queue<Integer> q = new LinkedList<>();
-
-        q.add(num);
+    static void DFS(int num){
         V[num] = true;
-        while (!q.isEmpty()){
-            int now = q.poll();
-            for(int x : A[now]){
-                if(!V[x]) {
-                    if(M[x] == -2){
-                        V[x] = true;
-                        q.add(x);
-                    }
-                    else if (M[now] != -2) {
-                        V[x] = true;
-                        count[M[x]]++;
-                        q.add(x);
-                    } else if (M[now] == -2) {
-                        V[x] = true;
-                        q.add(x);
-                        M[x] = -2;
-                    }
-                }
+        int count = 0;
+        for(int x : A[num]){
+            if(!V[x] && x != D){
+                count++;
+                DFS(x);
             }
         }
+        if(count == 0) {
+            answer++;
+        }
+
+
     }
-
-
 }
