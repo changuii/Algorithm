@@ -34,32 +34,24 @@ class Main {
         }
 
         D = Integer.parseInt(br.readLine());
-        BFS(root);
+        DFS(root);
         System.out.println(answer);
     }
 
 
-    public static void BFS(int a){
-        if (a == D) return;
-        Queue<Integer> q = new LinkedList<>();
 
-        q.add(a);
+    public static void DFS(int a){
+        if(a == D) return;
+
         V[a] = true;
-        while (!q.isEmpty()){
-            int now = q.poll();
-            int count = 0;
-            for (int x : A[now]){
-                if(!V[x] && x != D){
-                    V[x] = true;
-                    q.add(x);
-                    count++;
-                }
+        int count = 0;
+        for(int x : A[a]){
+            if(!V[x] && x != D){
+                count++;
+                DFS(x);
             }
-            if(count == 0) {
-                answer++;}
         }
-
-
+        if(count == 0) answer++;
     }
 
 
