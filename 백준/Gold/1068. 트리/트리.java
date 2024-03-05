@@ -7,72 +7,60 @@ import java.util.*;
 class Main {
     static ArrayList<Integer>[] A;
     static boolean[] V;
-    static int answer =0;
-    static int D = 0;
+    static int D;
+    static int answer = 0;
     public static void main(String[] args) throws IOException {
-      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader br =  new BufferedReader(new InputStreamReader(System.in));
 
-      int N = Integer.parseInt(br.readLine());
+        int N =Integer.parseInt(br.readLine());
 
-      A = new ArrayList[N];
-      V = new boolean[N];
-      for(int i=0; i<N; i++){
-          A[i] = new ArrayList<>();
-      }
+        V = new boolean[N];
+        A = new ArrayList[N];
+        for(int i=0; i<N; i++){
+            A[i] = new ArrayList<>();
+        }
 
-      int root = 0;
-      StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-      for(int i=0; i<N; i++){
-          int a = Integer.parseInt(st.nextToken());
-          if(a != -1) {
-              A[a].add(i);
-              A[i].add(a);
-          }else{
-              root = i;
-          }
-      }
+        int root = 0;
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        for(int i=0; i<N; i++){
+            int a = Integer.parseInt(st.nextToken());
 
-      D = Integer.parseInt(br.readLine());
-      if(root == D){
-          System.out.println(0);
-      }else {
-          DFS(root);
-          System.out.println(answer);
-      }
+            if(a != -1){
+                A[i].add(a);
+                A[a].add(i);
+            }else{
+                root = i;
+            }
+        }
+
+        D = Integer.parseInt(br.readLine());
+        BFS(root);
+        System.out.println(answer);
     }
-    static void BFS(int num){
-        if(D == 0) return;
+
+
+    public static void BFS(int a){
+        if (a == D) return;
         Queue<Integer> q = new LinkedList<>();
 
-        q.add(num);
-        V[num] = true;
+        q.add(a);
+        V[a] = true;
         while (!q.isEmpty()){
             int now = q.poll();
             int count = 0;
-            for(int x : A[now]){
+            for (int x : A[now]){
                 if(!V[x] && x != D){
                     V[x] = true;
                     q.add(x);
                     count++;
                 }
             }
-            if(count == 0) answer++;
-        }
-    }
-
-    static void DFS(int num){
-        V[num] = true;
-        int count = 0;
-        for(int x : A[num]){
-            if(!V[x] && x != D){
-                count++;
-                DFS(x);
-            }
-        }
-        if(count == 0) {
-            answer++;
+            if(count == 0) {
+                answer++;}
         }
 
 
     }
+
+
 }
