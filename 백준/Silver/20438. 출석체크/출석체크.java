@@ -6,56 +6,56 @@ import java.util.*;
 
 class Main {
     static int[] A;
-    static int N;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
-        N = Integer.parseInt(st.nextToken())+3;
+        int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
         int Q = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        A = new int[N];
-        for(int i=3; i<N; i++){
-            A[i] = 0;
-        }
+        A= new int[N+3];
 
         st = new StringTokenizer(br.readLine(), " ");
         for(int i=0; i<K; i++){
             A[Integer.parseInt(st.nextToken())] = -1;
         }
+
         st = new StringTokenizer(br.readLine(), " ");
         for(int i=0; i<Q; i++){
             check(Integer.parseInt(st.nextToken()));
         }
 
-        int[] value = new int[N];
-        for(int i=3; i<N; i++){
-            value[i] = value[i-1] + (A[i] != 1 ? 1 : 0);
+        int[] sum = new int[N+3];
+        for(int i=3; i<sum.length; i++){
+            sum[i] = sum[i-1] + (A[i] != 1 ? 1 : 0);
         }
 
         StringBuilder sb = new StringBuilder();
         for(int i=0; i<M; i++){
-            st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
-            sb.append(value[end] - value[start-1]).append("\n");
+            st = new StringTokenizer(br.readLine(), " ");
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            sb.append(sum[b] - sum[a-1]).append("\n");
         }
         System.out.println(sb);
 
+
+
     }
 
-    public static void check(int a){
-        if(A[a] == -1 ) return;
+    public static void check(int x){
+        if(A[x] == -1) return;
+        int times = 2;
 
-        int count = 2;
-        for(int i=a; i<N; i = a * count++){
-            if(A[i] == 0) {
+        for(int i = x; i<A.length; i = x * times++){
+            if(A[i] == 0){
                 A[i] = 1;
                 check(i);
             }
         }
+
     }
 
 
