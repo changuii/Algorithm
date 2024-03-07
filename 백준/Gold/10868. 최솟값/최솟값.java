@@ -1,0 +1,61 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+
+
+class Main {
+    static int[] tree;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+
+        int k = 0;
+        while (true){
+            if(Math.pow(2, k) > N) break;
+            k++;
+        }
+        int start_index = (int) Math.pow(2, k);
+        tree = new int[start_index * 2];
+
+        Arrays.fill(tree, 100000001);
+
+        for(int i=start_index; i<start_index + N; i++){
+            tree[i] = Integer.parseInt(br.readLine());
+        }
+
+        for(int i=start_index-1; i>0; i--){
+            tree[i] = Math.min(tree[2*i], tree[2*i+1]);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<M; i++){
+            st = new StringTokenizer(br.readLine(), " ");
+            int a = Integer.parseInt(st.nextToken()) + start_index -1;
+            int b = Integer.parseInt(st.nextToken()) + start_index -1;
+            sb.append(rangeMin(a, b)).append("\n");
+        }
+        System.out.println(sb);
+    }
+
+    public static int rangeMin(int startIndex, int endIndex){
+        PriorityQueue<Integer> q = new PriorityQueue<>();
+
+
+        while (startIndex <= endIndex){
+            if(startIndex % 2 == 1) q.add(tree[startIndex]);
+            if(endIndex % 2 == 0) q.add(tree[endIndex]);
+
+            startIndex = (startIndex + 1) /2;
+            endIndex = (endIndex - 1) / 2;
+        }
+
+        return q.poll();
+    }
+
+
+
+}
