@@ -42,17 +42,17 @@ class Main {
     }
 
     public static int rangeMin(int startIndex, int endIndex){
-        PriorityQueue<Integer> q = new PriorityQueue<>();
+        int min = 1000000001;
 
         while (startIndex <= endIndex){
-            if(startIndex % 2 == 1) q.add(tree[startIndex]);
-            if(endIndex % 2 == 0) q.add(tree[endIndex]);
+            if(startIndex % 2 == 1 && min > tree[startIndex]) min = tree[startIndex];
+            if(endIndex % 2 == 0 && min > tree[endIndex]) min = tree[endIndex];
 
             startIndex = (startIndex + 1) /2;
             endIndex = (endIndex - 1) / 2;
         }
 
-        return q.poll();
+        return min;
     }
 
 
