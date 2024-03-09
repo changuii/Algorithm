@@ -5,47 +5,46 @@ import java.util.*;
 
 
 class Main {
-    static ArrayList<Integer>[] A;
+    static int[][] parent;
     static boolean[] V;
-    static int[][] parents;
+    static ArrayList<Integer>[] A;
     static int[] depth;
-    static int K;
-
+    static int k;
     public static void main(String[] args) throws IOException {
        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-       int N = Integer.parseInt(br.readLine())+1;
+       int N = Integer.parseInt(br.readLine());
 
-       A = new ArrayList[N];
-       V = new boolean[N];
-       depth = new int[N];
-       for(int i=1; i<N; i++){
+
+       int count =1;
+       k =0;
+       while (count <= N){
+           count <<= 1;
+           k++;
+       }
+
+       parent = new int[k+1][N+1];
+       V = new boolean[N+1];
+       A = new ArrayList[N+1];
+       depth = new int[N+1];
+       for(int i=1; i<N+1; i++){
            A[i] = new ArrayList<>();
        }
 
        StringTokenizer st;
-       for(int i=1; i<N-1; i++){
+       for(int i=1; i<N; i++){
            st = new StringTokenizer(br.readLine(), " ");
            int a= Integer.parseInt(st.nextToken());
            int b= Integer.parseInt(st.nextToken());
-
            A[a].add(b);
            A[b].add(a);
        }
 
-       int temp = 1;
-       K = 0;
-       while (temp < N){
-           temp <<= 1;
-           K++;
-       }
-
-       parents = new int[K+1][N];
        BFS(1);
 
-       for(int i=1; i<K; i++){
-           for(int j=1; j< N; j++){
-               parents[i][j] = parents[i-1][parents[i - 1][j]];
+       for(int i = 1; i<k; i++){
+           for(int j=1; j<N+1; j++){
+               parent[i][j] = parent[i-1][parent[i-1][j]];
            }
        }
 
@@ -54,59 +53,58 @@ class Main {
        for(int i=0; i<M; i++){
            st = new StringTokenizer(br.readLine(), " ");
            int a = Integer.parseInt(st.nextToken());
-           int b = Integer.parseInt(st.nextToken());
+           int b= Integer.parseInt(st.nextToken());
            sb.append(LCA(a, b)).append("\n");
        }
         System.out.println(sb);
 
+
+
+
+
     }
+
 
     public static void BFS(int a){
         Queue<Integer> q = new LinkedList<>();
 
         q.add(a);
         V[a] = true;
-        depth[a] = 0;
         while (!q.isEmpty()){
             int now = q.poll();
             for(int x : A[now]){
                 if(!V[x]){
                     q.add(x);
                     V[x] = true;
-                    parents[0][x] = now;
-                    depth[x] = depth[now]+1;
+                    depth[x] = depth[now] + 1;
+                    parent[0][x] = now;
                 }
             }
-
         }
-
     }
-
     public static int LCA(int a, int b){
         if(depth[a] > depth[b]){
-            int temp = a;
-            a = b;
-            b = temp;
+            int temp = b;
+            b = a;
+            a = temp;
         }
-
-        for(int i = K; i >= 0; i--){
-            if(Math.pow(2, i) <= depth[b] - depth[a]){
-                if(depth[a] <= depth[parents[i][b]]){
-                    b = parents[i][b];
-                }
+        int diff = depth[b] - depth[a];
+        for(int i=k; i>=0; i--){
+            if(diff >= Math.pow(2, i) && diff > 0){
+                b = parent[i][b];
+                diff = depth[b] - depth[a];
             }
         }
-        for(int i = K; i>= 0; i--){
-            if(parents[i][a] != parents[i][b]){
-                a = parents[i][a];
-                b = parents[i][b];
+
+        for(int i=k; i >= 0; i--){
+            if(parent[i][a] != parent[i][b]){
+                a = parent[i][a];
+                b = parent[i][b];
             }
         }
         if(a != b)
-            a = parents[0][a];
+            a = parent[0][a];
         return a;
-
     }
-
 
 }
