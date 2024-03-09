@@ -96,15 +96,14 @@ class Main {
             }
         }
 
+        if(a == b) return a;
         for(int i=k; i >= 0; i--){
             if(parent[i][a] != parent[i][b]){
                 a = parent[i][a];
                 b = parent[i][b];
             }
         }
-        if(a != b)
-            a = parent[0][a];
-        return a;
+        return parent[0][a];
     }
 
 }
