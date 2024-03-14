@@ -16,20 +16,13 @@ class Main {
             sb.append(star[i]).append("\n");
         }
         System.out.println(sb);
-
-
-        
     }
 
 
     public static String[] star(int N){
-
-
-        if(N == 3){
-            String[] star = new String[3];
-            star[0] = "***";
-            star[1] = "* *";
-            star[2] = "***";
+        if(N == 1) {
+            String[] star = new String[1];
+            star[0] = "*";
             return star;
         }
 
