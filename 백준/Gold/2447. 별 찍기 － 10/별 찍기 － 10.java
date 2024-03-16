@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 
 
 class Main {
@@ -9,33 +8,34 @@ class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
-        String[] star = star(N);
+
+        String[] star = makeStar(N);
 
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i<star.length; i++){
+        for(int i=0; i<N; i++){
             sb.append(star[i]).append("\n");
         }
         System.out.println(sb);
+
+
     }
 
+    public static String[] makeStar(int N){
+        String[] star = new String[N];
 
-    public static String[] star(int N){
         if(N == 1) {
-            String[] star = new String[1];
             star[0] = "*";
             return star;
         }
-
-        String[] star = new String[N];
-        String[] temp = star(N/3);
-        for(int i=0; i<star.length; i++){
-            if(i+1 <= N / 3 || N - N / 3 < i + 1)
-                star[i] = temp[i%(N/3)].repeat(3);
-            else{
-                star[i] = temp[i%(N/3)] + " ".repeat(N/3) + temp[i%(N/3)];
+        else{
+            String[] temp = makeStar(N/3);
+            for(int i=0; i<N; i++){
+                if(i < N/3 || i >= N/3 *2)
+                    star[i] = temp[i%(N/3)].repeat(3);
+                else
+                    star[i] = temp[i%(N/3)] + " ".repeat(N/3) + temp[i%(N/3)];
             }
         }
-
         return star;
     }
 
