@@ -21,12 +21,13 @@ class Main {
         }
 
         DFS(0, "");
+        System.out.println(sb);
 
     }
 
     public static void DFS(int depth, String value){
         if(depth == M){
-            System.out.println(value.substring(1));
+            sb.append(value.substring(1)).append("\n");
             return;
         }
 
