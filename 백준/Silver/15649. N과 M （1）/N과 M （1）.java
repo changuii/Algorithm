@@ -3,7 +3,6 @@ import java.util.StringTokenizer;
 
 class Main {
     static StringBuilder sb =new StringBuilder();
-    static int[] A;
     static boolean[] V;
     static int N;
     static int M;
@@ -15,10 +14,6 @@ class Main {
         M = Integer.parseInt(st.nextToken());
 
         V = new boolean[N];
-        A = new int[N];
-        for(int i=1; i<N; i++){
-            A[i] = i;
-        }
 
         DFS(0, "");
         System.out.println(sb);
