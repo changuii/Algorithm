@@ -26,7 +26,6 @@ class Main {
 
     }
     public static void DFS(int depth, int num, int now){
-        if((N-depth-1)*100_000 < S - num) return;
         if(depth > N-1) return;
         if(num == S && depth > 0) answer++;
 
