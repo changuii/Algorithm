@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 class Main {
-    static int visit;
+    static char visit = 0;
     static int[][] A;
     static int N;
     static int min = 1_000_000_001;
