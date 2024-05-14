@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
@@ -7,70 +6,68 @@ import java.util.*;
 class Main {
     static ArrayList<Integer>[] A;
     static boolean[] V;
-    static StringBuilder sb;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+    static StringBuilder sb = new StringBuilder();
+    public static void main(String[] args) throws Exception {
+       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+       StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken()+1);
-        int M = Integer.parseInt(st.nextToken());
-        int start = Integer.parseInt(st.nextToken());
+       int N = Integer.parseInt(st.nextToken());
+       int M = Integer.parseInt(st.nextToken());
+       int S = Integer.parseInt(st.nextToken());
 
+       V = new boolean[N+1];
+       A = new ArrayList[N+1];
+       for(int i=1; i<N+1; i++){
+           A[i] = new ArrayList<>();
+       }
 
-        V = new boolean[N];
-        A = new ArrayList[N];
-        for(int i=1; i<N; i++){
-            A[i] = new ArrayList<>();
-        }
-
-        for(int i=0; i<M; i++){
-            st = new StringTokenizer(br.readLine(), " ");
+       for(int i=0; i<M; i++){
+            st = new StringTokenizer(br.readLine());
             int x = Integer.parseInt(st.nextToken());
             int y = Integer.parseInt(st.nextToken());
+
             A[x].add(y);
             A[y].add(x);
-        }
+       }
+       for(int i=1; i<N+1; i++){
+           Collections.sort(A[i]);
+       }
 
-        for(int i=1; i<N; i++){
-            Collections.sort(A[i]);
-        }
+       DFS(S);
+       sb.append("\n");
+       V = new boolean[N+1];
+       BFS(S);
+       System.out.println(sb);
 
-        sb = new StringBuilder();
-
-        DFS(start);
-        V = new boolean[N];
-        sb.append("\n");
-        BFS(start);
-        System.out.println(sb);
-    }
-
-    private static void DFS(int index){
-        if(V[index]) return ;
-
-        sb.append(index).append(" ");
-        V[index] = true;
-        for(int x : A[index]){
-            if(!V[x])
-                DFS(x);
-        }
 
     }
 
-    private static void BFS(int index){
-        Queue<Integer> q = new LinkedList<>();
-        sb.append(index).append(" ");
-        V[index] = true;
-        q.offer(index);
+    public static void DFS(int now){
+        sb.append(now).append(" ");
+        V[now] =true;
+        for(int n : A[now]){
+            if(!V[n]){
+                DFS(n);
+            }
+        }
+    }
+
+    public static void BFS(int now){
+        Queue<Integer> q = new LinkedList();
+
+        q.add(now);
+        V[now] = true;
         while (!q.isEmpty()){
-            int now = q.poll();
-            for(int x : A[now]){
+            int a = q.poll();
+            sb.append(a).append(" ");
+            for(int x : A[a]){
                 if(!V[x]){
-                    sb.append(x).append(" ");
-                    q.add(x);
                     V[x] = true;
+                    q.add(x);
                 }
             }
         }
     }
 
 }
+
