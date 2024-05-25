@@ -1,44 +1,45 @@
-import java.io.*;
 import java.util.*;
+import java.lang.*;
+import java.io.*;
 
+// The main method must be in a class named "Main".
 class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+
         int N = Integer.parseInt(br.readLine());
-
+        StringBuilder sb = new StringBuilder();
+        
         int set = 0;
+        StringTokenizer st;
         for(int i=0; i<N; i++){
-            String[] value = br.readLine().split(" ");
+            st = new StringTokenizer(br.readLine());
 
-            String operation = value[0];
-
-            switch (operation){
-                case "add":
-                    int num = Integer.parseInt(value[1]);
-                    set |= (1 << num);
-                    break;
-                case "remove":
-                    num = Integer.parseInt(value[1]);
-                    set &= ~(1 << num);
-                    break;
-                case "check":
-                    num = Integer.parseInt(value[1]);
-                    sb.append( ((set & (1 << num) )== (1 << num)) ? 1 : 0).append("\n");
-                    break;
-                case "toggle":
-                    num = Integer.parseInt(value[1]);
-                    set ^= (1 << num);
-                    break;
-                case "all":
-                    set = (1 << 21) - 1;
-                    break;
-                case "empty":
-                    set = 0;
-                    break;
+            String oper = st.nextToken();
+            int value = st.hasMoreTokens() ? Integer.parseInt(st.nextToken()) : 0;
+            
+            if(oper.equals("add")){
+                set |= (1 << value);
+            }
+            else if(oper.equals("remove")){
+                set &= ~(1 << value);
+            }
+            else if(oper.equals("check")){
+                sb.append(((set & (1 << value)) == (1 << value) ? "1" : "0"))
+                    .append("\n");
+            }
+            else if(oper.equals("toggle")){
+                set ^= (1 << value);
+            }
+            else if(oper.equals("all")){
+                set = (1 << 21) - 1;
+            }
+            else{
+                set = 0;
             }
         }
         System.out.println(sb);
+    
+        
     }
-
 }
