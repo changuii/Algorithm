@@ -32,7 +32,7 @@ class Main {
                 count++;
             }else if(n.s > target.s && n.g == target.g){
                 count++;
-            }else if(n.b > target.b && n.g + n.s == target.g + target.s){
+            }else if(n.b > target.b && n.s == target.s && n.g == target.g){
                 count++;
             }
         }
@@ -48,7 +48,6 @@ class Main {
         int g;
         int s;
         int b;
-        int th;
         public Node(int c, int g, int s, int b){
             this.c=c;
             this.g=g;
