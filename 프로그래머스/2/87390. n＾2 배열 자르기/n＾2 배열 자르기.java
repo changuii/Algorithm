@@ -5,12 +5,9 @@ class Solution {
         int x=(int)(left / n);
         int y=(int)(left % n);
         for(int i=0; i<answer.length; i++){
-            if(y == n){
-                y = 0;
-                x++;
-            }
+            x = (int)(left / n);
+            y = (int)(left++ % n);
             answer[i] = Math.max(x+1, y+1);
-            y++;
         }
         return answer;
     }
