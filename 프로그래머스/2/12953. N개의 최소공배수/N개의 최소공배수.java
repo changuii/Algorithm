@@ -1,7 +1,7 @@
 import java.util.Arrays;
 class Solution {
     public int solution(int[] arr) {
-        Arrays.sort(arr);
+        
         
         int s = arr[0];
         for(int i=1; i<arr.length; i++){
