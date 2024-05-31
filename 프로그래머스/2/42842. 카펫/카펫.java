@@ -1,6 +1,14 @@
 class Solution {
     public int[] solution(int brown, int yellow) {
         
+        // brown + yellow = sum
+        // brown + yellow = 가로 x 세로
+        // i => 가로
+        
+        // i를 높이면서, (sum % i == 0), i >= (sum / i)
+        // ?
+        // 가로-2 * 세로-2 == yellow
+        
         int i= 3;
         int map = brown + yellow;
         while(true){
