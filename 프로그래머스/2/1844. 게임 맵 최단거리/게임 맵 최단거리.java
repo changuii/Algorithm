@@ -19,12 +19,11 @@ class Solution {
             for(int i=0; i<4; i++){
                 int valueX = now[0] + dx[i];
                 int valueY = now[1] + dy[i];
-                if(valueX >= 0 && valueY >= 0 && valueX <maps.length && valueY <maps[0].length){
-                    if(maps[valueX][valueY] != 0 && !visit[valueX][valueY]) {
-                        q.add(new int[]{valueX, valueY});
-                        maps[valueX][valueY] += maps[now[0]][now[1]];
-                        visit[valueX][valueY] = true;
-                    }
+                if(valueX >= 0 && valueY >= 0 && valueX <maps.length && valueY <maps[0].length
+                  && maps[valueX][valueY] != 0 && !visit[valueX][valueY]){
+                    q.add(new int[]{valueX, valueY});
+                    maps[valueX][valueY] += maps[now[0]][now[1]];
+                    visit[valueX][valueY] = true;
                 }
             }
             
