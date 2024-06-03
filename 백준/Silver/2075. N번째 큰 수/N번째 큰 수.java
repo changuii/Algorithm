@@ -9,16 +9,18 @@ class Main {
 
         int N = Integer.parseInt(br.readLine());
 
-        ArrayList<Integer> list = new ArrayList<>();
+        PriorityQueue<Integer> q = new PriorityQueue<>((o1,o2) -> o2-o1);
         for(int i=0; i<N; i++){
             StringTokenizer st = new StringTokenizer(br.readLine());
             for(int j=0; j<N; j++){
-                list.add(Integer.parseInt(st.nextToken()));
+                q.add(Integer.parseInt(st.nextToken()));
             }
         }
 
-        Collections.sort(list);
-        System.out.println(list.get(list.size() - N));
+        for(int i=0; i<N-1; i++){
+            q.poll();
+        }
+        System.out.println(q.poll());
         
     }
 }
