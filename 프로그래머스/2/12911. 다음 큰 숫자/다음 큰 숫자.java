@@ -1,10 +1,9 @@
 class Solution {
     public int solution(int n) {
-        
-        int i = n+1;
-        while(Integer.bitCount(n) != Integer.bitCount(i)){
-            i++;
+        int temp = n+1;
+        while(Integer.bitCount(temp) != Integer.bitCount(n)){
+            temp++;
         }
-        return i;
+        return temp;
     }
 }
