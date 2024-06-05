@@ -1,13 +1,15 @@
-import java.util.*;
 class Solution {
     boolean solution(String s) {
-        int c = 0;
+        int start = 0;
+        int end = 0;
+        
         for(int i=0; i<s.length(); i++){
-            if(s.charAt(i) == '(') c++;
-            else c--;
+            if(s.charAt(i) == '(') start++;
+            else end++;
             
-            if(c < 0) return false;
+            if(start < end) return false;
         }
-        return c == 0;
+        
+        return start == end;
     }
 }
