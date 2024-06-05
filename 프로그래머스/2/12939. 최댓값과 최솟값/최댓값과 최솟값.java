@@ -1,18 +1,15 @@
 import java.util.*;
+import java.util.stream.Collectors;
 import java.math.*;
 
 class Solution {
     public String solution(String s) {
-        StringTokenizer st = new StringTokenizer(s, " ");
-        int min = Integer.parseInt(st.nextToken());
-        int max = min;
-        while(st.hasMoreTokens()){
-            int now = Integer.parseInt(st.nextToken());
-            min = Math.min(now, min);
-            max = Math.max(now, max);
-        }
+        List<Integer> list = Arrays.stream(s.split(" "))
+            .map(i->Integer.parseInt(i))
+            .collect(Collectors.toList());
+        Collections.sort(list);
         
         
-        return min + " " + max;
+        return list.get(0) + " " + list.get(list.size()-1);
     }
 }
