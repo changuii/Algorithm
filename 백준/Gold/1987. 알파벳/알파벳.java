@@ -8,7 +8,7 @@ class Main {
     static int[] dx = {0, 0, 1, -1};
     static int[] dy = {1, -1, 0, 0};
     static int max = 0;
-    static Set<Character> set = new HashSet<>();
+    static boolean[] set = new boolean[26];
     static int R;
     static int C;
     public static void main(String[] args) throws Exception {
@@ -27,7 +27,7 @@ class Main {
             }
         }
 
-        set.add(map[0][0]);
+        set[map[0][0] - 'A'] = true;
         DFS(0, 0, 1);
         System.out.println(max);
         
@@ -36,18 +36,18 @@ class Main {
     }
 
     public static void DFS(int x, int y, int now){
+        set[map[x][y] - 'A'] = true;
         max = Math.max(max, now);
 
         for(int i=0; i<4; i++){
             int xValue = x + dx[i];
             int yValue = y + dy[i];
             if(xValue >= 0 && xValue < R && yValue >=0 && yValue < C
-                  && !set.contains(map[xValue][yValue])){
-                set.add(map[xValue][yValue]);
+                  && !set[map[xValue][yValue] - 'A']){
                 DFS(xValue, yValue, now+1);
             }
         }
-        set.remove(map[x][y]);
+        set[map[x][y] - 'A'] = false;
         
         
     }
