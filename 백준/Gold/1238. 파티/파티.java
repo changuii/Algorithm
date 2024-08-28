@@ -12,14 +12,10 @@ class Main {
         int M = Integer.parseInt(st.nextToken());
         int X = Integer.parseInt(st.nextToken());
 
-        int[][] map = new int[N+1][N+1];
+        ArrayList<int[]>[] g = new ArrayList[N+1];
         for(int i=1; i<=N; i++){
-            for(int j=1; j<=N; j++){
-                if(i == j) map[i][j] = 0;
-                else map[i][j] = 100000000;
-            }
+            g[i] = new ArrayList<>();
         }
-        
         
         for(int i=0; i<M; i++){
             st = new StringTokenizer(br.readLine());
@@ -28,21 +24,44 @@ class Main {
             int b = Integer.parseInt(st.nextToken());
             int w = Integer.parseInt(st.nextToken());
 
-            map[a][b] = w;
+            g[a].add(new int[]{b, w});
         }
 
-        for(int k=1; k<=N; k++){
-            for(int i=1; i<=N; i++){
-                for(int j=1; j<=N; j++){
-                    map[i][j] = Math.min(map[i][j], map[i][k] + map[k][j]);
+        
+        int[][] Dist = new int[N+1][N+1];
+        for(int i=1; i<=N; i++){
+            PriorityQueue<int[]> q = new PriorityQueue<>((o1, o2)->{
+                return o1[1] - o2[1];
+            });
+            boolean[] visit = new boolean[N+1];
+            int[] D = new int[N+1];
+            Arrays.fill(D, 10000000);
+            D[i] = 0;
+            q.add(new int[]{i, 0});
+
+            while(!q.isEmpty()){
+                int[] now = q.poll();
+
+                if(visit[now[0]]) continue;
+                visit[now[0]] = true;
+
+                for(int[] v : g[now[0]]){
+                    if(D[v[0]] > D[now[0]] + v[1]){
+                        D[v[0]] = D[now[0]] + v[1];
+
+                        q.add(new int[]{v[0], D[v[0]]});
+                    }
                 }
+                
             }
+            Dist[i] = D;
         }
+        
 
         int max = 0;
         for(int i=1; i<=N; i++){
             if(i == X) continue;
-            max = Math.max(max, map[i][X] + map[X][i]);
+            max = Math.max(max, Dist[i][X] + Dist[X][i]);
         }
         System.out.println(max);
         
