@@ -10,60 +10,65 @@ class Main {
 
         int N = Integer.parseInt(br.readLine());
 
-        int[] B = new int[N];
+        Building[] B = new Building[N+1];
         StringTokenizer st = new StringTokenizer(br.readLine());
-        for(int i=0; i<N; i++){
-            B[i] = Integer.parseInt(st.nextToken());
+        for(int i=1; i<=N; i++){
+            B[i] = new Building(i, Integer.parseInt(st.nextToken()));
         }
 
-        
+        Deque<Building> stack = new ArrayDeque<>();
 
-        int[] left = new int[N];
-        int[] right = new int[N];
-        int[] min = new int[N];
+        int[] left = new int[N+1];
+        int[] right = new int[N+1];
+        int[] min = new int[N+1];
         Arrays.fill(min, Integer.MAX_VALUE);
         // x 높이의 건물이 존재할 때, x높이의 건물 좌측에 보이는 건물은 x보다 커야한다.
-        for(int i=0; i<N; i++){
-            for(int j=i-1; j>=0; j--){
-                if(B[i] < B[j]){
-                    left[i] = left[j] + 1;
-                    min[i] = j;
-                    break;
-                }
-            }            
-        }
-        for(int i=N-1; i>=0; i--){
-            for(int j=i+1; j<N; j++){
-                if(B[i] < B[j]){
-                    right[i] = right[j] + 1;
-                    if(Math.abs(i - min[i]) > Math.abs(i - j)){
-                        min[i] = j;
-                    }
-                    break;
-                }
+        for(int i=1; i<=N; i++){
+            while (!stack.isEmpty() && stack.peekFirst().height <= B[i].height){
+                stack.pop();
             }
+            left[i] = stack.size();
+            if(stack.size() > 0){
+                min[i] = stack.peekFirst().index;
+            }
+            stack.push(B[i]);
         }
 
-        // for(int i=0; i<N; i++){
-        //     System.out.print((i+1)+ " : ");
-        //     for(int now : list[i]){
-        //         System.out.print(now + " ");
-        //     }
-        //     System.out.println();
-        // }
-
+        stack.clear();
+        for(int i=N; i>0; i--){
+            while (!stack.isEmpty() && stack.peekFirst().height <= B[i].height){
+                stack.pop();
+            }
+            right[i] = stack.size();
+            if(stack.size() > 0){
+                min[i] = Math.abs(min[i] - i) <= Math.abs(stack.peekFirst().index - i) 
+                    ? min[i] : stack.peekFirst().index;
+            }
+            stack.push(B[i]);
+        }
+        
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i<N; i++){
+        for(int i=1; i<=N; i++){
             if(left[i] + right[i] == 0){
                 sb.append("0").append("\n");
             }
             else{
-                sb.append(left[i] + right[i]).append(" ").append(min[i] + 1).append("\n");
+                sb.append(left[i] + right[i]).append(" ").append(min[i]).append("\n");
                 
             }
         }
         System.out.println(sb);
 
 
+    }
+
+    static class Building{
+        int index;
+        int height;
+
+        public Building(int index, int height){
+            this.index=index;
+            this.height=height;
+        }
     }
 }
