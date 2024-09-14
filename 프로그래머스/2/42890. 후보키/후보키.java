@@ -1,24 +1,19 @@
 import java.util.*;
 class Solution {
     public int solution(String[][] relation) {
-        // relation 열의 수 
         return BFS(relation);
     }
     
     public int BFS(String[][] relation){
         int cnt = 0;
         ArrayDeque<List<Integer>> q = new ArrayDeque<>();
-        Set<int[]>[] set = new Set[relation[0].length];
+        Set<int[]>[] isSubSet = new Set[relation[0].length];
         for(int i=0; i<relation[0].length; i++){
-            set[i] = new HashSet<>();
+            isSubSet[i] = new HashSet<>();
+            List<Integer> l = new ArrayList<>();
+            l.add(i);
+            q.addLast(l);
         }
-        
-        for(int i=0; i<relation[0].length; i++){
-            List<Integer> list = new ArrayList<>();
-            list.add(i);
-            q.addLast(list);
-        }
-        
         while(!q.isEmpty()){
             // 0 1, 02, 0 3
             List<Integer> now = q.poll();
@@ -26,7 +21,7 @@ class Solution {
             int size = now.size()-2;
             boolean flag = false;
             for(int i=0; i<=size && !flag; i++){
-                for(int[] x : set[i]){
+                for(int[] x : isSubSet[i]){
                     int isDupl = 0;
                     for(int y : x){
                         if(now.contains(y)) isDupl++;
@@ -58,7 +53,7 @@ class Solution {
                 for(int i=0; i<x.length; i++){
                     x[i] = now.get(i);
                 }
-                set[now.size()-1].add(x);
+                isSubSet[now.size()-1].add(x);
                 continue;
             }
             
