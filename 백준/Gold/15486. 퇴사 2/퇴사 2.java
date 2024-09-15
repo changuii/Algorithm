@@ -22,12 +22,12 @@ class Main {
         }
 
         // dp[i]는 i일부터 N일까지 상담했을 때의 최대값
-        long[] dp = new long[N+1];
+        int[] dp = new int[N+1];
         for(int i=N-1; i>=0; i--){
             if(i + A[i][0] > N )
                 dp[i] = dp[i+1];
             else 
-                dp[i] = Math.max(dp[i+1], A[i][1] + dp[i+A[i][0]]);
+                dp[i] = Integer.max(dp[i+1], A[i][1] + dp[i+A[i][0]]);
         }
         // System.out.println(Arrays.toString(dp));
         System.out.println(dp[0]);
