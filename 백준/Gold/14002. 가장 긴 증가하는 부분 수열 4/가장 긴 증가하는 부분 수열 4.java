@@ -33,6 +33,7 @@ class Main {
         int val = 0;
         StringBuilder sb = new StringBuilder();
         for(int i=N-1; i>=0; i--){
+            if(max < 1) break;
             if(max == dp[i]){
                 sb.insert(0, A[i] + " ");
                 max--;
