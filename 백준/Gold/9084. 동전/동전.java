@@ -34,29 +34,24 @@ class Main {
             
 
             int M = Integer.parseInt(br.readLine());
-            int[][] dp = new int[M+1][N];
-            for(int i=0; i<N; i++){
-                dp[0][i] = 1;
-            }
-            
-            for(int i=1; i<=M; i++){
-                for(int j=0; j<N; j++){
-                    if(i - A[j] >= 0)
-                       for(int k=j; k>=0; k--){
-                           dp[i][j] += dp[i - A[j]][k];
-                           if(i - A[j] == 0) break;
-                       }
+            int[] dp = new int[M+1];
+            for (int i = 0; i < N; i++) {
+                for (int j = 1; j <=M; j++) {
+                    if (j - A[i] > 0) {
+                        dp[j] += dp[j-A[i]];
+                    } else if (j - A[i] == 0) {
+                        dp[j]++;
+                    }
                 }
             }
+
+            // System.out.println(Arrays.toString(dp));
+            
             // for(int i=0; i<M; i++){
             //     System.out.println(Arrays.toString(dp[i]));
             // }
-            int answer = 0;
-            for(int i=0; i<N; i++){
-                answer += dp[M][i];
-            }
 
-            sb.append(answer).append("\n");
+            sb.append(dp[M]).append("\n");
         }
 
         System.out.println(sb);
