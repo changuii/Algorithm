@@ -16,28 +16,27 @@ class Main {
 
         int[] map = new int[F+1];
         boolean[] visit = new boolean[F+1];
-        visit[0] = true;
+        Arrays.fill(map, -1);
 
         Queue<Integer> q = new ArrayDeque<>();
 
         q.offer(S);
-        visit[S] = true;
+        map[S] = 0;
+        map[0] = 0;
         while (!q.isEmpty()) {
             int now = q.poll();
             if(now == G) break;
-            if(now + U <= F && !visit[now+U]){
+            if(now + U <= F && map[now+U] == -1){
                 q.offer(now + U);
                 map[now+U] = map[now] + 1;
-                visit[now+U] = true;
             }
-            if(now - D >= 0 && !visit[now-D]){
+            if(now - D >= 0 && map[now-D] == -1){
                 q.offer(now - D);
                 map[now-D] = map[now] + 1;
-                visit[now-D] = true;
             }
         }
 
-        System.out.println(!visit[G] ? "use the stairs" : map[G]);
+        System.out.println(map[G] == -1 ? "use the stairs" : map[G]);
         
         
     }
