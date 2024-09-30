@@ -24,7 +24,7 @@ class Main {
         // 공유기 사이의 거리
         int mid = 0;
 
-        while (l < h) {
+        while (l <= h) {
             mid = (l + h) / 2;
 
             int val = isInstall(A, mid);
@@ -32,11 +32,11 @@ class Main {
                 l = mid + 1;
             }
             else{
-                h = mid;
+                h = mid - 1;
             }            
         }
 
-        System.out.println(l-1);
+        System.out.println(h);
     }
 
 
