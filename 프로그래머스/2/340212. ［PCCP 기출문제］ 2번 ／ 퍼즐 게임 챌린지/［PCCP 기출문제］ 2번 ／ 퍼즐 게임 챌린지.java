@@ -1,12 +1,7 @@
 class Solution {
     public int solution(int[] diffs, int[] times, long limit) {
-        int max = 0;
-        for(int i=0; i<diffs.length; i++){
-            max = Math.max(diffs[i], max);
-        }
-        
         int l = 1;
-        int h = max;
+        int h = 100_000;
         int mid = 0;
         while(l <= h){
             mid = (l + h) / 2;
@@ -32,6 +27,7 @@ class Solution {
             
             time += now * (preTime + times[i]) + times[i];
             preTime = times[i];
+            if(time > limit) break;
         }
         return time <= limit;
     }
