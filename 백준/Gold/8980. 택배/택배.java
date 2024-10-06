@@ -13,7 +13,7 @@ class Main {
         int M = Integer.parseInt(br.readLine());
 
         PriorityQueue<int[]> q = new PriorityQueue<>((o1, o2)->{
-           return (o1[1] - o1[0]) - (o2[1] - o2[0]); 
+           return o1[1] - o2[1]; 
         });
         for(int i=0; i<M; i++){
             st = new StringTokenizer(br.readLine());
@@ -28,7 +28,7 @@ class Main {
 
         // 1 -> 1 ~ 2, 2 -> 2 ~ 3
         int[] size = new int[N];
-        int answer = 0;
+        long answer = 0;
         while (!q.isEmpty()) {
             int[] now = q.poll();
             // System.out.println(now[0] + " -> " + now[1] + " size : " + now[2]);
