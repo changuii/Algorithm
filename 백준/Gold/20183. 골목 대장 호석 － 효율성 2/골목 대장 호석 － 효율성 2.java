@@ -41,8 +41,8 @@ class Main {
 
 
         long[][] distance = new long[N+1][2];
-        long shame = 1_000_000_000L;
-        for(int i=1; i<N; i++){
+        long shame = Long.MAX_VALUE;
+        for(int i=1; i<=N; i++){
             distance[i][0] = distanceA[i][0] + distanceB[i][0];
             distance[i][1] = Math.max(distanceA[i][1], distanceB[i][1]);
 
@@ -51,7 +51,7 @@ class Main {
             }
         }
 
-        if(shame == 1_000_000_000L){
+        if(shame == Long.MAX_VALUE){
             System.out.println(-1);
             return;
         }
