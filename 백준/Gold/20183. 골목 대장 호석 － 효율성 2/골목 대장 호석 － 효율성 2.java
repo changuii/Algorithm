@@ -43,6 +43,7 @@ class Main {
         long[][] distance = new long[N+1][2];
         long shame = Long.MAX_VALUE;
         for(int i=1; i<=N; i++){
+            if(distanceA[i][0] == Long.MAX_VALUE || distanceB[i][0] == Long.MAX_VALUE) continue;
             distance[i][0] = distanceA[i][0] + distanceB[i][0];
             distance[i][1] = Math.max(distanceA[i][1], distanceB[i][1]);
 
