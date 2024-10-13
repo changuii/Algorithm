@@ -4,7 +4,6 @@ import java.io.*;
 
 // The main method must be in a class named "Main".
 class Main {
-    static int[] set;
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
@@ -32,49 +31,42 @@ class Main {
             list.get(b).add(new int[]{a, w});
         }
 
-        long[][] distanceB = dijkstra(list, B, N);
-        if(distanceB[A][0] == Long.MAX_VALUE){
-            System.out.println(-1);
-            return;
-        }
-        long[][] distanceA = dijkstra(list, A, N);
 
+        long l = 0;
+        long h = Integer.MAX_VALUE;
+        long mid = 0;
 
-        long[][] distance = new long[N+1][2];
-        long shame = Long.MAX_VALUE;
-        for(int i=1; i<=N; i++){
-            if(distanceA[i][0] == Long.MAX_VALUE || distanceB[i][0] == Long.MAX_VALUE) continue;
-            distance[i][0] = distanceA[i][0] + distanceB[i][0];
-            distance[i][1] = Math.max(distanceA[i][1], distanceB[i][1]);
+        long[] distance;
+        while (l<=h) {
+            mid = (l + h) / 2;
 
-            if(distance[i][0] <= C && shame > distance[i][1]){
-                shame = distance[i][1];
+            distance = dijkstra(list, A, N, mid, C);
+
+            // System.out.println(mid + " : " + distance[B]);
+            if(distance[B] != Long.MAX_VALUE){
+                h = mid - 1;
+            }
+            else{
+                l = mid + 1;
             }
         }
-
-        if(shame == Long.MAX_VALUE){
-            System.out.println(-1);
-            return;
-        }
-        System.out.println(shame);
-        
+        System.out.println(h == Integer.MAX_VALUE ? -1 : h+1);
     }
     
-    public static long[][] dijkstra(ArrayList<ArrayList<int[]>> list, int start, int N){
-        
+    public static long[] dijkstra(ArrayList<ArrayList<int[]>> list, int start, int N, long shame, long C){
         PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) ->{
            return Long.compare(o1.weight, o2.weight); 
         });
 
         boolean[] visit = new boolean[N+1];
         
-        long[][] distance= new long[N+1][2];
+        long[] distance= new long[N+1];
         for(int i=1; i<=N; i++){
-            distance[i][0] = Long.MAX_VALUE;
+            distance[i] = Long.MAX_VALUE;
         }
         
         q.offer(new Node(start, 0));
-        distance[start][0] = 0;
+        distance[start] = 0;
         while (!q.isEmpty()) {
             Node now = q.poll();
 
@@ -82,10 +74,11 @@ class Main {
             visit[now.index] = true;
             
             for(int[] next : list.get(now.index)){
-                if(next[1] + now.weight < distance[next[0]][0]){
-                    distance[next[0]][0] = now.weight + next[1];
-                    distance[next[0]][1] = Math.max(distance[now.index][1], next[1]);
-                    q.offer(new Node(next[0], distance[next[0]][0]));
+                if(next[1] > shame || next[1] + now.weight > C) continue;
+                
+                if(next[1] + now.weight < distance[next[0]]){
+                    distance[next[0]] = distance[now.index] + next[1];
+                    q.offer(new Node(next[0], distance[next[0]]));
                 }
             }
         }
@@ -100,10 +93,6 @@ class Main {
         public Node(int index, long weight){
             this.index=index;
             this.weight=weight;
-        }
-
-        public String toString(){
-            return String.format("[ %d, %d ]", index, weight);
         }
     }
 
