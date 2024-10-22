@@ -18,33 +18,21 @@ class Main {
         StringBuilder answer = new StringBuilder();
         
         answer.append("어느 한 컴퓨터공학과 학생이 유명한 교수님을 찾아가 물었다.").append("\n");
-        whatIsRecursion(1, N, answer);
+        whatIsRecursion(1, N, answer, "");
         System.out.println(answer);
     }
 
-    public static void whatIsRecursion(int depth, int N, StringBuilder sb){
-        makeRecursionDepth(sb, depth);
-        sb.append(WHAT_IS_RECURSION).append("\n");
+    public static void whatIsRecursion(int depth, int N, StringBuilder sb, String depthLine){
+        sb.append(depthLine).append(WHAT_IS_RECURSION).append("\n");
         if(depth <= N){
-            makeRecursionDepth(sb, depth);
-            sb.append(RECURSION_STORY1).append("\n");
-            makeRecursionDepth(sb, depth);
-            sb.append(RECURSION_STORY2).append("\n");
-            makeRecursionDepth(sb, depth);
-            sb.append(RECURSION_STORY3).append("\n");
-            whatIsRecursion(depth+1, N, sb);
+            sb.append(depthLine).append(RECURSION_STORY1).append("\n");
+            sb.append(depthLine).append(RECURSION_STORY2).append("\n");
+            sb.append(depthLine).append(RECURSION_STORY3).append("\n");
+            whatIsRecursion(depth+1, N, sb, depthLine + RECURSION_DEPTH);
         }
         else{
-            makeRecursionDepth(sb, depth);
-            sb.append(RECURSION_ANSWER).append("\n");
+            sb.append(depthLine).append(RECURSION_ANSWER).append("\n");
         }
-        makeRecursionDepth(sb, depth);
-        sb.append(ANSWERED_THAT).append("\n");
-    }
-
-    public static void makeRecursionDepth(StringBuilder sb, int depth){
-        for(int i=1; i<depth; i++){
-            sb.append(RECURSION_DEPTH);
-        }
+        sb.append(depthLine).append(ANSWERED_THAT).append("\n");
     }
 }
