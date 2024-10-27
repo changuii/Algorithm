@@ -3,32 +3,35 @@ class Solution {
     public int solution(int[] topping) {
         int count = 0;
         
-        int[] left = new int[1_000_001];
-        Set<Integer> leftSet = new HashSet<>();
+        int[] left = new int[10_001];
+        int leftCount = 0;
         
-        int[] right = new int[1_000_001];
-        Set<Integer> rightSet = new HashSet<>();
+        int[] right = new int[10_001];
+        int rightCount = 0;
         
-        for(int i=0; i<topping.length; i++){
-            right[topping[i]]++;
-            rightSet.add(topping[i]);
+        for(int v : topping){
+            if(right[v] == 0){
+                rightCount++;
+            }
+            right[v]++;
         }
         
-        for(int i=0; i<topping.length; i++){
-            int now = topping[i];
-            
-            right[now]--;
-            if(right[now] == 0){
-                rightSet.remove(now);
+        for(int v : topping){
+            right[v]--;
+            if(right[v] == 0){
+                rightCount--;
             }
             
-            left[now]++;
-            leftSet.add(now);
+            if(left[v] == 0){
+                leftCount++;
+            }
+            left[v]++;
             
-            if(leftSet.size() == rightSet.size()){
+            if(leftCount == rightCount){
                 count++;
             }
         }
+        
         return count;
     }
 }
