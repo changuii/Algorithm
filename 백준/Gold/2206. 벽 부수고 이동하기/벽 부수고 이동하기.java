@@ -4,22 +4,17 @@ import java.io.*;
 
 // The main method must be in a class named "Main".
 class Main {
-    static int[][] map;
-    static int[][][] visit;
-    static int N;
-    static int M;
-    static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {1, 0, -1, 0};
-    static int min = Integer.MAX_VALUE;
+    static int[] dx = {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-        map = new int[N][M];
-        visit = new int[N][M][2];
+        int[][] map = new int[N][M];
+
         for(int i=0; i<N; i++){
             char[] val = br.readLine().toCharArray();
             for(int j=0; j<M; j++){
@@ -27,39 +22,41 @@ class Main {
             }
         }
 
-        BFS(0, 0);
-        System.out.println(min == Integer.MAX_VALUE ? -1 : min);
-        
+        int result = BFS(map, N, M);
+        System.out.println(result);
     }
 
-    public static void BFS(int x, int y){
+    public static int BFS(int[][] map, int N, int M){
         Queue<int[]> q = new ArrayDeque<>();
 
-        q.add(new int[]{x, y, 0});
-        visit[x][y][0] = 1;
-        while(!q.isEmpty()){
-            int[] now = q.poll();
-            if(now[0] == N-1 && now[1] == M-1){
-                min = Math.min(min, visit[now[0]][now[1]][now[2]]);
-            }
-            for(int i=0; i<4; i++){
-                int valueX = dx[i] + now[0];
-                int valueY = dy[i] + now[1];
-                if(valueX >= 0 && valueX < N && valueY >= 0 && valueY <M
-                    && map[valueX][valueY] == 0 ){
-                    if(visit[valueX][valueY][now[2]] == 0){
-                        visit[valueX][valueY][now[2]] = visit[now[0]][now[1]][now[2]] + 1;
-                        q.add(new int[]{valueX, valueY, now[2]});
-                    }
-                }
-                else if(valueX >= 0 && valueX < N && valueY >= 0 && valueY < M
-                  && map[valueX][valueY] == 1 && now[2] == 0){
-                    visit[valueX][valueY][1] = visit[now[0]][now[1]][0] + 1;
-                    q.add(new int[]{valueX, valueY, 1});
-                }
-            }
-        }
+        boolean[][][] visit = new boolean[N][M][2];
 
+        q.offer(new int[]{0, 0, 0, 1});
+        visit[0][0][0] = true;
+        while (!q.isEmpty()) {
+            int[] now = q.poll();
+
+            if(now[0] == N-1 && now[1] == M-1) return now[3];
+            
+            for(int i=0; i<4; i++){
+                int x = now[0] + dx[i];
+                int y = now[1] + dy[i];
+
+                if(!(x >=0 && x<N && y>=0 && y<M)) continue;
+
+                if(!visit[x][y][now[2]] && map[x][y] == 0){
+                    visit[x][y][now[2]] = true;
+                    q.offer(new int[]{x, y, now[2], now[3] + 1});
+                }
+                if(now[2] == 0 && map[x][y] == 1 && !visit[x][y][1]){
+                    visit[x][y][1] = true;
+                    q.offer(new int[]{x, y, 1, now[3] + 1});
+                }
+                
+            }
+            
+        }
+        return -1;
         
     }
 }
