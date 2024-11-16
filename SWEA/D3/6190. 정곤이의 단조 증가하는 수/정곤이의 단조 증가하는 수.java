@@ -37,10 +37,13 @@ class Solution {
     }
 
     public static boolean isIncreament(int value){
-        char[] val = String.valueOf(value).toCharArray();
-
-        for(int i=0; i<val.length-1; i++){
-            if(val[i] > val[i+1]) return false;
+        int now = value % 10;
+        value /= 10;
+        
+        while (value > 0) {
+            if(now < value % 10) return false;
+            now = value % 10;
+            value /= 10;
         }
         return true;
     }
