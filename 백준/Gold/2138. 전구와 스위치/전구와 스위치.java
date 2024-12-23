@@ -14,32 +14,11 @@ class Main {
 
         char[] firstOn = before.toCharArray();
         char[] firstOff = before.toCharArray();
-
-        int c1 = 1;
+        
         takeOn(firstOn, 0);
-        for(int i=1; i<firstOn.length; i++){
-            if(firstOn[i-1] != after[i-1]){
-                takeOn(firstOn, i);
-                c1++;
-            }
-            
-            if(isEqualsArr(firstOn)){
-                break;
-            }
-        }
-
-        int c2 = 0;
-        for(int i=1; i<firstOff.length; i++){
-            if(firstOff[i-1] != after[i-1]){
-                takeOn(firstOff, i);
-                c2++;
-            }
-
-            if(isEqualsArr(firstOff)){
-                break;
-            }
-        }
-
+        int c1 = gridy(firstOn) + 1;
+        int c2 = gridy(firstOff);
+        
         boolean on = isEqualsArr(firstOn);
         boolean off = isEqualsArr(firstOff);
 
@@ -50,12 +29,21 @@ class Main {
 
         if(on && !off){
             System.out.println(c1);
-        } else if(!on & off){
-            System.out.println(c2);
-        } else{
-            System.out.println(c1 > c2 ? c2 : c1);
+            return;
         }
-    
+
+        System.out.println(c2);
+    }
+
+    public static int gridy(char[] value){
+        int c = 0;
+        for(int i=1; i<value.length; i++){
+            if(value[i-1] != after[i-1]){
+                takeOn(value, i);
+                c++;
+            }
+        }
+        return c;
     }
 
     public static void takeOn(char[] before, int index){
