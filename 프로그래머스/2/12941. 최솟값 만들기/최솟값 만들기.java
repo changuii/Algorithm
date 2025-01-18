@@ -1,13 +1,24 @@
 import java.util.*;
-class Solution
-{
+class Solution{
     public int solution(int []A, int []B){
-        Arrays.sort(A);
-        Arrays.sort(B);
-        int sum = 0;
+        
+        PriorityQueue<Integer> min = new PriorityQueue<>();
+        PriorityQueue<Integer> max = new PriorityQueue<>((o1, o2) -> {
+            return o2 - o1;
+        });
+        
         for(int i=0; i<A.length; i++){
-            sum += A[i] * B[A.length-1-i];
+            min.offer(A[i]);
+            max.offer(B[i]);
         }
-        return sum;
+        
+        int answer = 0;
+        for(int i=0; i<A.length; i++){
+            answer += min.poll() * max.poll();
+        }
+        
+        
+
+        return answer;
     }
 }
