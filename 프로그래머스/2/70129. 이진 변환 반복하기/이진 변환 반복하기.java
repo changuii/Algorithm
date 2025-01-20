@@ -1,17 +1,29 @@
-
 class Solution {
     public int[] solution(String s) {
-        int count = 0;
-        int zero = 0;
-        while(s.length() > 1){
-            int temp = s.length();
-            // 1. 0 제거
-            s = s.replaceAll("0", "");
-            zero += temp - s.length();
-            // 2. s의 길이를 2진법 문자열로
-            s = Integer.toBinaryString(s.length());
-            count++;
+        int c = 0;
+        int z = 0;
+        
+        while(!s.equals("1")){
+            c++;
+            
+            int len = s.length();
+            s = s.replace("0", "");
+            z += len - s.length();
+            
+            s = convert2(s.length());
         }
-        return new int[]{count, zero};
+        
+        
+        return new int[] {c, z};
+    }
+    
+    public String convert2(int value){
+        StringBuilder result = new StringBuilder();
+        
+        while(value != 0){
+            result.insert(0,value % 2);
+            value /= 2;
+        }
+        return result.toString();
     }
 }
