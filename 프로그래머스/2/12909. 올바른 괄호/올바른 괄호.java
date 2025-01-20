@@ -1,15 +1,18 @@
+import java.util.*;
 class Solution {
     boolean solution(String s) {
-        int start = 0;
-        int end = 0;
+        char[] values = {'(', ')'};
+        Deque<Character> q = new ArrayDeque<>();
         
-        for(int i=0; i<s.length(); i++){
-            if(s.charAt(i) == '(') start++;
-            else end++;
-            
-            if(start < end) return false;
+        for(char c : s.toCharArray()){
+            if(!q.isEmpty() && q.peekLast() == values[0] && c == values[1]){
+                q.pollLast();
+            }
+            else{
+                q.addLast(c);
+            }
         }
         
-        return start == end;
+        return q.isEmpty();
     }
 }
