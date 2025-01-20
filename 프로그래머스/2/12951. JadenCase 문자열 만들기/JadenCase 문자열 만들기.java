@@ -1,22 +1,22 @@
-import java.util.*;
-
 class Solution {
     public String solution(String s) {
-        String[] arr = s.split(" ");
         
-        String x = "";
-        for(int i=0; i<arr.length; i++){
-            System.out.println(arr[i]);
-            if(arr[i].length() > 1){
-            arr[i] = arr[i].substring(0, 1).toUpperCase() 
-                + arr[i].substring(1, arr[i].length()).toLowerCase();
-            } else if (arr[i].length() > 0)
-                arr[i] = arr[i].substring(0, 1).toUpperCase();
-            x += arr[i] + " ";
+        boolean isFirst = true;
+        StringBuilder sb = new StringBuilder(s);
+        for(int i = 0; i<sb.length(); i++){
+            if(sb.charAt(i) == ' ') {
+                isFirst = true;
+                continue;
+            }
+            
+            if(isFirst){
+               sb.setCharAt(i, Character.toUpperCase(sb.charAt(i)));
+                isFirst = false;
+            }else{
+                sb.setCharAt(i, Character.toLowerCase(sb.charAt(i)));
+            }
         }
-        if(s.charAt(s.length()-1) != x.charAt(x.length()-1))
-            x= x.substring(0, x.length()-1);
-        return x;
+        
+        return sb.toString();
     }
-
 }
