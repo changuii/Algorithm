@@ -1,14 +1,19 @@
-import java.util.Stack;
+import java.util.*;
 class Solution
 {
     public int solution(String s)
     {
-        Stack<Character> stack = new Stack<>();
-        stack.push(s.charAt(0));
-        for(int i=1; i<s.length(); i++){
-            if(!stack.isEmpty() && stack.peek() == s.charAt(i)) stack.pop();
-            else stack.push(s.charAt(i));
+        Deque<Character> q = new ArrayDeque<>();
+        
+        for(int i=0; i<s.length(); i++){
+            if(!q.isEmpty() && q.peekLast() == s.charAt(i)){
+                q.pollLast();
+            } else{
+                q.addLast(s.charAt(i));
+            }
         }
-        return stack.isEmpty() ? 1 : 0;
+        
+
+        return q.isEmpty() ? 1 : 0;
     }
 }
