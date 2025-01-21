@@ -1,25 +1,15 @@
-import java.util.Arrays;
 class Solution {
     public int solution(int[] arr) {
         
+        int[] visit = new int[100000000];
         
-        int s = arr[0];
-        for(int i=1; i<arr.length; i++){
-            int x = 1;
-            while(true){
-                if(s > arr[i]){
-                    if((x * s) % arr[i] == 0){
-                        s = x*s;
-                        break;
-                    }else x++;
-                }else{
-                    if((x * arr[i]) % s == 0){
-                        s = x* arr[i];
-                        break;
-                    }else x++;
-                }
+        int m = 0;
+        while(true){
+            m++;
+            for(int i=0; i<arr.length; i++){
+                visit[arr[i] * m]++;
+                if(visit[arr[i] * m] == arr.length) return arr[i] * m;
             }
         }
-        return s;
     }
 }
