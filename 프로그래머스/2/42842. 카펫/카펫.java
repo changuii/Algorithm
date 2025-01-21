@@ -1,17 +1,12 @@
 class Solution {
     public int[] solution(int brown, int yellow) {
         
-        // 10 , 2 -> 4 3
-        //  8 , 1 -> 3 3
-        // 24, 24 -> 8 6
-        // brown + yellow = width * height
-        int size = brown + yellow;
-        int width = 3;
-        while(size % width != 0 || size / width > width 
-              || yellow != (width-2) * (size / width-2)){
-            width++;
+        int y = 1;
+        while(true){
+            if(yellow % y == 0 && (yellow / y) + y + 2 == brown / 2){
+                return new int[]{(yellow / y) + 2, y + 2};
+            }   
+            y++;
         }
-        return new int[]{width, size / width};
-        
     }
 }
