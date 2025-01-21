@@ -1,17 +1,21 @@
 class Solution {
     public int solution(int n) {
-        int i=0;
-        int j=0;
-        int sum = 0;
-        int c = 0;
-        while(j<=n){
-            if(n > sum) sum += ++j;
-            else if(n < sum) sum -= ++i;
-            else{
-                sum += ++j;
-                c++;
+        int i = 1;
+        int j = 1;
+        int v = 0;
+        int answer = 0;
+        while(i <= n/2){
+            if(v == n){
+                v -= i++;
+                answer++;
+            }
+            else if(v < n){
+                v += j++;
+            } else{
+                v -= i++;
             }
         }
-        return c;
+        return answer+1;
     }
+        
 }
