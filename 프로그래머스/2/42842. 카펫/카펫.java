@@ -1,12 +1,12 @@
 class Solution {
-    public int[] solution(int brown, int yellow) {
+    public int[] solution(int 갈색, int 노랑색) {
         
-        int y = 1;
+        int 세로 = 1;
         while(true){
-            if(yellow % y == 0 && (yellow / y) + y + 2 == brown / 2){
-                return new int[]{(yellow / y) + 2, y + 2};
+            if(노랑색 % 세로 == 0 && (노랑색 / 세로) + 세로 + 2 == 갈색 / 2){
+                return new int[]{(노랑색 / 세로) + 2, 세로 + 2};
             }   
-            y++;
+            세로++;
         }
     }
 }
