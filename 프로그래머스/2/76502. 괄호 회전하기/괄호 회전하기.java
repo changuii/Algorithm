@@ -1,36 +1,38 @@
 import java.util.*;
 class Solution {
+    char[] val = {'{', '}', '[', ']', '(', ')'};
     public int solution(String s) {
         
-        String temp = lotate(s);
-        int c = 0;
-        while(!temp.equals(s)){
-            if(isValid(temp)) c++;
-            temp = lotate(temp);
+        StringBuilder sb = new StringBuilder(s);
+        int answer = 0;
+        for(int i=0; i<s.length()-1; i++){
+            if(isCorrect(sb)) answer++;
+            sb.insert(sb.length(), sb.charAt(0));
+            sb.delete(0, 1);
         }
-        if(isValid(s)) c++;
-        return c;
-    }
-    
-    public String lotate(String s){
-        return s.substring(1, s.length()) + s.substring(0, 1);
-    }
-    
-    public boolean isValid(String s){
-        Stack<Character> stack = new Stack<>();
         
-        for(int i=0; i<s.length(); i++){
-            char target = s.charAt(i);
-            if(target == '{' || target == '[' || target == '(' ) stack.push(target);
-            else{
-                if(stack.isEmpty()) return false;
-                char temp = stack.peek();
-                if(target == '}' && temp == '{' ) stack.pop();
-                else if(target == ']' && temp == '[' ) stack.pop();
-                else if(target == ')' && temp == '(' ) stack.pop();
-                else return false;
+        return answer;
+    }
+    
+    public boolean isCorrect(StringBuilder sb){
+        Deque<Character> q = new ArrayDeque<>();
+        
+        for(int i=0; i<sb.length(); i++){
+            if(!q.isEmpty() && isMatch(q.peekLast(), sb.charAt(i))){
+                q.pollLast();
+            } else{
+                q.addLast(sb.charAt(i));
             }
         }
-        return stack.isEmpty();
+        return q.isEmpty();
+    }
+    
+    public boolean isMatch(char a, char b){
+        for(int i=0; i<3; i++){
+            if(val[i * 2] == a && val[i * 2 + 1] == b){
+                return true;
+            }
+        }
+        return false;
     }
 }
