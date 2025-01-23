@@ -2,33 +2,36 @@ class Solution {
     public int solution(int[] diffs, int[] times, long limit) {
         int l = 1;
         int h = 100_000;
-        int mid = 0;
+        int m = 0;
+        
         while(l <= h){
-            mid = (l + h) / 2;
+            m = (l + h) / 2;
             
-            if(check(mid, diffs, times, limit)){
-                h = mid - 1;
+            if(check(m, limit, diffs, times)){
+                h = m - 1;
             }
             else{
-                l = mid + 1;
+                l = m + 1;
             }
         }
         
         return h + 1;
     }
     
-    public static boolean check(int level, int[] diffs, int[] times, long limit){
+    public boolean check(long m, long limit, int[] diffs, int[] times){
         long time = 0;
-        long preTime = 0;
-        long now = 0;
         for(int i=0; i<diffs.length; i++){
-            if(diffs[i] <= level) now = 0;
-            else now = diffs[i] - level;
-            
-            time += now * (preTime + times[i]) + times[i];
-            preTime = times[i];
-            if(time > limit) break;
+            if(diffs[i] <= m){
+                time += times[i];
+            } else{
+                long v = i == 0 ? 0 : times[i-1] + times[i];
+                time += (diffs[i] - m) * v + times[i];
+            }
+            if(time > limit){
+                return false;
+            }
         }
-        return time <= limit;
+        
+        return true;
     }
 }
