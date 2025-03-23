@@ -1,42 +1,30 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+import java.lang.*;
+import java.io.*;
 
-
+// The main method must be in a class named "Main".
 class Main {
-    static int[] A;
-    public static void main(String[] args) throws IOException {
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-       StringTokenizer st;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-       int N = Integer.parseInt(br.readLine());
-       A = new int[N];
+        int N = Integer.parseInt(br.readLine());
 
-       st = new StringTokenizer(br.readLine(), " ");
-       for(int i=0; i<N; i++){
-           A[i] = Integer.parseInt(st.nextToken());
-       }
-       Arrays.sort(A);
+        Set<Integer> set = new HashSet<>();
 
-       int M = Integer.parseInt(br.readLine());
-       st = new StringTokenizer(br.readLine(), " ");
-       StringBuilder sb = new StringBuilder();
-       for(int i=0; i<M; i++){
-           sb.append(binarySearch(Integer.parseInt(st.nextToken()), 0, N-1)).append("\n");
-       }
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i=0; i<N; i++){
+            set.add(Integer.parseInt(st.nextToken()));
+        }
 
+        StringBuilder sb = new StringBuilder();
+
+        int M = Integer.parseInt(br.readLine());
+        st = new StringTokenizer(br.readLine());
+        
+        for(int i=0; i<M; i++){
+            sb.append(set.contains(Integer.parseInt(st.nextToken())) ? 1 : 0).append("\n");
+        }
+        
         System.out.println(sb);
-     }
-
-     private static int binarySearch(int t, int start, int end){
-         int mid = start + (end - start) /2;
-
-        if(end - start <1 && A[mid] != t) return 0;
-
-        if(A[mid] == t) return 1;
-        else if (A[mid] < t) return binarySearch(t, mid+1, end);
-        else return binarySearch(t, start, mid);
-     }
-
+    }
 }
