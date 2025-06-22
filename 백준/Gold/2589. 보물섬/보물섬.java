@@ -25,13 +25,25 @@ class Main {
 
         for(int i=0; i<N; i++){
             for(int j=0; j<M; j++){
-                if(map[i][j] == 0) continue;
+                if(map[i][j] == 0 || !isBoundary(map, i, j)) continue;
 
                 bfs(map, i, j, N, M);
             }
         }
         
         System.out.println(max);
+    }
+
+    public static boolean isBoundary(int[][] map, int x, int y){
+        for(int i=0; i<4; i++){
+            int X = x + dx[i];
+            int Y = y + dy[i];
+
+            if((X < 0 || X >= map.length || Y < 0 || Y >= map[0].length)) return true;
+
+            if(map[X][Y] == 0) return true;
+        }
+        return false;
     }
 
     public static void bfs(int[][] map, int x, int y, int N, int M){
