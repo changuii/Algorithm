@@ -5,12 +5,14 @@ import java.io.*;
 // The main method must be in a class named "Main".
 class Main {
     static int[] value;
+    static int[] rank;
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
         int M = Integer.parseInt(br.readLine());
         value = new int[N+1];
+        rank = new int[N+1];
 
         for(int i=1; i<=N; i++){
             value[i] = i;
@@ -50,8 +52,15 @@ class Main {
     public static void union(int a, int b){
         int x = find(a);
         int y = find(b);
-        
-        value[y] = x;
+
+        if(rank[x] > rank[y]){
+            value[y] = x;
+        } else if(rank[x] < rank[y]) {
+            value[x] = y;
+        } else {
+            value[y] = x;
+            rank[x]++;
+        }
     }
 
     public static int find(int a){
