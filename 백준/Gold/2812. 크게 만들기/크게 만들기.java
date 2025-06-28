@@ -10,37 +10,36 @@ class Main {
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
 
-        String val = br.readLine();
+        char[] val = br.readLine().toCharArray();
 
         if(N - M == 1){
             int max = 0;
             for(int i=0; i<N; i++){
-                max = Math.max(max, val.charAt(i));
+                max = Math.max(max, val[i]);
             }
             System.out.println(((char) max) +"");
             return;
         }
 
-        StringBuilder sb = new StringBuilder(val);
-        int now = 0;
+        Deque<Character> q = new ArrayDeque<>();
+        for(char v : val){
+
+            while(M > 0 && !q.isEmpty() && q.peekLast() < v){
+                q.pollLast();
+                M--;
+            }
+            q.addLast(v);
+        }
+
         for(int i=0; i<M; i++){
+            q.pollLast();
+        }
 
-            boolean flag = false;
-            for(int j=now; j<sb.length()-1; j++){
-                if(sb.charAt(j) < sb.charAt(j+1)){
-                    sb.deleteCharAt(j);
-                    now = j == 0 ? 0 : j-1;
-                    flag = true;
-                    break;
-                }
-            }
-
-            if(!flag){
-                sb.deleteCharAt(sb.length()-1);
-            }
+        StringBuilder sb = new StringBuilder();
+        while(!q.isEmpty()){
+            sb.append(q.pollFirst() + "");
         }
         
         System.out.println(sb);
-        
     }
 }
