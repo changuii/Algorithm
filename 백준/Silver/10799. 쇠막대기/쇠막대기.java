@@ -2,7 +2,7 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-// The main method must be in a class named "Main".
+// https://www.acmicpc.net/problem/10799
 class Main {
     static int answer;
     public static void main(String[] args) throws Exception{
@@ -12,42 +12,24 @@ class Main {
 
         Deque<Character> q = new ArrayDeque<>();
 
-        for(char v : values){
-            if(q.isEmpty()) q.addLast(v);
-            else if(v == '(') q.addLast(v);
-            else if(v == ')' && q.peekLast() == '('){
+        int answer = 0;
+        for(int i=0; i<values.length; i++){
+            char now = values[i];
+
+            if(now == '('){
+                q.addLast(now);
+            }
+            else{
                 q.pollLast();
-                q.addLast('1');
+                if(values[i-1] == '('){
+                    answer += q.size();
+                }
+                else {
+                    answer++;
+                }
             }
-            else q.addLast(v);
         }
 
-        while (!q.isEmpty()) {
-            if(q.peekFirst() == '('){
-                search(q);
-            } else{
-                q.pollFirst();
-            }
-        }
         System.out.println(answer);
-    }
-
-    public static int search(Deque<Character> q){
-        if(q.peekFirst() == '('){
-            int c = 0;
-            q.pollFirst();
-            while(q.peekFirst() != ')'){
-                c += search(q);
-            }
-            q.pollFirst();
-            answer += c + 1;
-            return c;
-        }
-        else if(q.peekFirst() == '1'){
-            q.pollFirst();
-            return 1;
-        }
-
-        return 0;
     }
 }
