@@ -4,7 +4,7 @@ import java.io.*;
 
 // https://www.acmicpc.net/problem/1992
 class Main {
-    static int[] answer = new int[3];
+    static StringBuilder sb = new StringBuilder();
     static char[][] map;
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,19 +16,24 @@ class Main {
             map[i] = br.readLine().toCharArray();
         }
 
-
-        System.out.println(search(0, 0, N));
+        search(0, 0, N);
+        System.out.println(sb);
     }
 
-    public static String search(int x, int y, int len){
+    public static void search(int x, int y, int len){
         if(isOk(x, y, len)){
-            return map[x][y]+"";
+            sb.append(map[x][y]);
+            return;
         }
 
         int half = len / 2;
 
-        return "(" +search(x, y, half) + search(x, y + half, half)
-            + search(x + half, y, half) + search(x + half, y + half, half)+")";
+        sb.append("(");
+        search(x, y, half);
+        search(x, y + half, half);
+        search(x + half, y, half);
+        search(x + half, y + half, half);
+        sb.append(")");
         
     }
 
