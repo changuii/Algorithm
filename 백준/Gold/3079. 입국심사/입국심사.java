@@ -13,17 +13,20 @@ class Main {
         int N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
+        long max = 0;
         for(int i=0; i<N; i++){
-            list.add(Long.parseLong(br.readLine()));
+            long now = Long.parseLong(br.readLine());
+            list.add(now);
+            max = Math.max(now, max);
         }
         Collections.sort(list);
 
-        System.out.println(binarySearch());
+        System.out.println(binarySearch(max));
     }
 
-    public static long binarySearch(){
+    public static long binarySearch(long max){
         long l = 1;
-        long h = Long.MAX_VALUE - 1;
+        long h = 1_000_000_000L * max;
 
         long mid;
         while(l <= h){
