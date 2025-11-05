@@ -2,55 +2,56 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-
 class Main {
-    public static int[][] A;
-    public static boolean[][] V;
-    public static int[] dx = {0, 1, 0, -1};
-    public static int[] dy = {1, 0, -1, 0};
-    public static int N;
-    public static int M;
+    static int[] dx=  {1, -1, 0, 0};
+    static int[] dy = {0, 0, 1, -1};
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-    public static void main(String[] args) throws IOException {
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-       StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-       N = Integer.parseInt(st.nextToken());
-       M = Integer.parseInt(st.nextToken());
+        int[][] map = new int[N+1][M+1];
+        for(int i=1; i<=N; i++) {
+            char[] val = br.readLine().toCharArray();
 
-       V = new boolean[N][M];
-       A = new int[N][M];
-
-       for(int i=0; i<N; i++){
-           char[] X = br.readLine().toCharArray();
-           for(int j=0; j<M; j++){
-               A[i][j] = Integer.parseInt(X[j]+"");
-           }
-       }
-       BFS(0, 0);
-        System.out.println(A[N-1][M-1]);
-    }
-    private static void BFS(int i, int j){
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{i, j});
-        V[i][j] = true;
-
-        while (!q.isEmpty()){
-            int now[] = q.poll();
-            for(int k =0; k<4; k++){
-                int x = now[0] + dx[k];
-                int y = now[1] + dy[k];
-                if(x >= 0 && y >= 0 && x < N && y < M){
-                    if(A[x][y] != 0 && !V[x][y]){
-                        V[x][y] = true;
-                        A[x][y] = A[now[0]][now[1]] + 1;
-                        q.add(new int[] {x, y});
-                    }
-                }
+            for(int j=1; j<=M; j++) {
+                map[i][j] = val[j-1] - '0';
             }
         }
 
+        bfs(map, N, M);
     }
 
+    public static void bfs(int[][] map, int N, int M) {
+        Deque<int[]> q = new ArrayDeque<>();
 
+        boolean[][] visit = new boolean[map.length][map[0].length];
+
+        visit[1][1] = true;
+        q.addLast(new int[]{1, 1, 1});
+        while (!q.isEmpty()) {
+            int[] now = q.pollFirst();
+
+            if(now[0] == N && now[1] == M) {
+                System.out.println(now[2]);
+                return;
+            }
+
+            for(int i=0; i<4; i++) {
+                int x = now[0] + dx[i];
+                int y = now[1] + dy[i];
+
+                if(!(x>0 && x <map.length && y>0 && y <map[0].length)) continue;
+                if(map[x][y] == 0 || visit[x][y]) continue;
+                
+                visit[x][y] = true;
+                q.addLast(new int[]{x, y, now[2] + 1});
+            }
+
+                
+        }
+        
+    }
 }
