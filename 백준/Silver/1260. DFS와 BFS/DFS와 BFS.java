@@ -1,73 +1,74 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.*;
+import java.lang.*;
+import java.io.*;
 
-
+// The main method must be in a class named "Main".
 class Main {
-    static ArrayList<Integer>[] A;
-    static boolean[] V;
-    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws Exception {
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-       StringTokenizer st = new StringTokenizer(br.readLine());
 
-       int N = Integer.parseInt(st.nextToken());
-       int M = Integer.parseInt(st.nextToken());
-       int S = Integer.parseInt(st.nextToken());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-       V = new boolean[N+1];
-       A = new ArrayList[N+1];
-       for(int i=1; i<N+1; i++){
-           A[i] = new ArrayList<>();
-       }
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int V = Integer.parseInt(st.nextToken());
 
-       for(int i=0; i<M; i++){
+        List<List<Integer>> map = new ArrayList<>();
+        for(int i=0; i<=N; i++){
+            map.add(new ArrayList<>());
+        }
+
+        for(int i=0; i<M; i++) {
             st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
+            
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
 
-            A[x].add(y);
-            A[y].add(x);
-       }
-       for(int i=1; i<N+1; i++){
-           Collections.sort(A[i]);
-       }
+            map.get(a).add(b);
+            map.get(b).add(a);
+        }
 
-       DFS(S);
-       sb.append("\n");
-       V = new boolean[N+1];
-       BFS(S);
-       System.out.println(sb);
+        for(int i=1; i<=N; i++) {
+            Collections.sort(map.get(i));
+        }
 
+        StringBuilder result = new StringBuilder();
+        dfs(map, new boolean[N+1], V, result);
+        result.append("\n");
+        bfs(map, V, result);
 
+        System.out.println(result);
     }
 
-    public static void DFS(int now){
-        sb.append(now).append(" ");
-        V[now] =true;
-        for(int n : A[now]){
-            if(!V[n]){
-                DFS(n);
+    public static void dfs(List<List<Integer>> map, boolean[] visit, int now, StringBuilder result) {
+        visit[now] = true;
+        result.append(now).append(" ");
+        
+        for(int next : map.get(now)) {
+            if(!visit[next]) {
+                dfs(map, visit, next, result);
             }
         }
     }
 
-    public static void BFS(int now){
-        Queue<Integer> q = new LinkedList();
+    public static void bfs(List<List<Integer>> map, int first, StringBuilder result) {
+        Deque<Integer> q = new ArrayDeque<>();
 
-        q.add(now);
-        V[now] = true;
-        while (!q.isEmpty()){
-            int a = q.poll();
-            sb.append(a).append(" ");
-            for(int x : A[a]){
-                if(!V[x]){
-                    V[x] = true;
-                    q.add(x);
+        boolean[] visit = new boolean[map.size()];
+        q.addLast(first);
+        visit[first] = true;
+
+        while (!q.isEmpty()) {
+            int now = q.pollFirst();
+            result.append(now).append(" ");
+
+            for(int next: map.get(now)) {
+                if(!visit[next]) {
+                    visit[next] = true;
+                    q.addLast(next);
                 }
             }
+            
         }
     }
-
 }
-
