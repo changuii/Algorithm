@@ -5,6 +5,7 @@ import java.io.*;
 // The main method must be in a class named "Main".
 class Main {
     static int[] num;
+    static int[] value;
     static boolean[] visit;
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,8 +19,10 @@ class Main {
 
         num = new int[M];
         visit = new boolean[M];
+        value = new int[M];
         for(int i=0; i<M; i++) {
             num[i] = Integer.parseInt(st.nextToken());
+            value[i] = i;
         }
 
         st = new StringTokenizer(br.readLine());
@@ -34,27 +37,36 @@ class Main {
         for(int i=0; i<K; i++) {
             int idx = binarySearch(c[i]);
 
-            int xidx = idx;
-            for(int x=0; x+idx<num.length; x++) {
-                if(!visit[x +idx]) {
-                    xidx = x + idx;
-                    visit[x+idx] = true;
-                    break;
-                }
-            }
+            int x = find(idx);
+            union(x, x + 1);
+            int xidx = x;
+            
             sb.append(num[xidx]).append("\n");
         }
         System.out.println(sb);
         
     }
 
+    public static int find(int a) {
+        if(a == value[a]) return a;
+        else return value[a] = find(value[a]);
+    }
 
-    // val = 4
-    // 2 3 4 5 7 8 9
-    // l = 0 h = 6 mid = 3
-    // l = 0 h = 2 mid = 1
-    // l = 2 h = 2 mid = 2
-    // l = 3 h = 2 
+    public static void union(int a, int b) {
+        if(a >= value.length || b >= value.length) return;
+        
+        int x = find(a);
+        int y = find(b);
+
+        if(x > y) {
+            value[y] = x;
+        }
+        else {
+            value[x] = y;
+        }
+    }
+
+    
     public static int binarySearch(int val) {
         int l = 0;
         int h = num.length - 1;
