@@ -12,25 +12,24 @@ class Main {
         int N = Integer.parseInt(br.readLine());
 
         value = new int[N];
-        int[] dp = new int[N];
         StringTokenizer st = new StringTokenizer(br.readLine());
         for(int i=0; i<N; i++) {
-            dp[i] = 1;
             value[i] = Integer.parseInt(st.nextToken());
         }
 
-        
-        for(int i=0; i<N; i++) {
+        int[] tails = new int[N];
+        int len = 0;
 
-            for(int j=i-1; j>=0; j--) {
-                if(value[i] < value[j]) {
-                    dp[i]= Math.max(dp[i], dp[j] + 1);
-                }
-            }
-            max = Math.max(dp[i], max);
+        for(int x : value) {
+            int y = -x;
+            int pos = Arrays.binarySearch(tails, 0, len, y);
+            if(pos < 0) pos = -pos - 1;
+            tails[pos] = y;
+            if(pos == len) len ++;
         }
 
-        System.out.println(max);
+        System.out.println(len);
         
     }
+
 }
